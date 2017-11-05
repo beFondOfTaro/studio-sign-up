@@ -1,4 +1,4 @@
-package com.iotstudio.studiosignup.util;
+package com.iotstudio.studiosignup.util.model;
 
 import org.springframework.http.HttpStatus;
 

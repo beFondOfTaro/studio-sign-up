@@ -1,6 +1,6 @@
 package com.iotstudio.studiosignup.service;
 
-import com.iotstudio.studiosignup.util.ResponseModel;
+import com.iotstudio.studiosignup.util.model.ResponseModel;
 
 public interface BaseService<T> {
 

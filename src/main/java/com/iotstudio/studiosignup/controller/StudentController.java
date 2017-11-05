@@ -2,7 +2,7 @@ package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.entity.Student;
 import com.iotstudio.studiosignup.service.StudentService;
-import com.iotstudio.studiosignup.util.ResponseModel;
+import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class StudentController {
 //    }
 
     @GetMapping(value = entity)
-    public ResponseModel studentListByPage(@RequestParam("page") Integer page,@RequestParam("limit") Integer limit){
-        return studentService.selectAllByPage(page,limit);
+    public ResponseModel studentListByPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size){
+        return studentService.selectAllByPage(page,size);
     }
 
     @GetMapping(value = entity+"/{id}")

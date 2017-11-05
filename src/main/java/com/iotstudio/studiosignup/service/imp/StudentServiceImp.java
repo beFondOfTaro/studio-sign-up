@@ -3,7 +3,8 @@ package com.iotstudio.studiosignup.service.imp;
 import com.iotstudio.studiosignup.entity.Student;
 import com.iotstudio.studiosignup.repository.StudentRepository;
 import com.iotstudio.studiosignup.service.StudentService;
-import com.iotstudio.studiosignup.util.ResponseModel;
+import com.iotstudio.studiosignup.util.model.PageDataModel;
+import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -61,6 +64,12 @@ public class StudentServiceImp implements StudentService {
         Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
         //根据分页请求查询所有实体
         Page<Student> studentPage = studentRepository.findAll(pageable);
-        return new ResponseModel(studentPage.getContent());
+        PageDataModel studentPageDataModel =
+                new PageDataModel(
+                        studentPage.getTotalElements(),
+                        studentPage.getTotalPages(),
+                        studentPage.getContent()
+                );
+        return new ResponseModel(studentPageDataModel);
     }
 }

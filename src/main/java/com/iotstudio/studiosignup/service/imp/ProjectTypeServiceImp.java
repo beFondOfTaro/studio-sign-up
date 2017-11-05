@@ -3,7 +3,7 @@ package com.iotstudio.studiosignup.service.imp;
 import com.iotstudio.studiosignup.entity.ProjectType;
 import com.iotstudio.studiosignup.repository.ProjectTypeRepository;
 import com.iotstudio.studiosignup.service.ProjectTypeService;
-import com.iotstudio.studiosignup.util.ResponseModel;
+import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>layout 后台大布局 - Layui</title>
-    <link rel="stylesheet" href="/static/css/layui.css">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -81,20 +81,20 @@
                 <button class="layui-btn" data-type="isAll">验证是否全选</button>
             </div>
 
-            <table class="layui-table" lay-data="{width: 892, height:332, url:'/demo/table/user/', page:true, id:'idTest'}" lay-filter="demo">
+            <table  id="idTest" class="layui-table" lay-filter="demo">
                 <thead>
                 <tr>
                     <th lay-data="{checkbox:true, fixed: true}"></th>
                     <th lay-data="{field:'id', width:80, sort: true, fixed: true}">ID</th>
                     <th lay-data="{field:'username', width:80}">用户名</th>
-                    <th lay-data="{field:'sex', width:80, sort: true}">性别</th>
-                    <th lay-data="{field:'city', width:80}">城市</th>
-                    <th lay-data="{field:'sign', width:177}">签名</th>
-                    <th lay-data="{field:'experience', width:80, sort: true}">积分</th>
+                    <th lay-data="{field:'password', width:80, sort: true}">密码</th>
+                    <th lay-data="{field:'realName', width:80}">真实姓名</th>
+                    <th lay-data="{field:'studentNumber', width:177}">学号</th>
+                    <th lay-data="{field:'major', width:80, sort: true}">专业</th>
 
-                    <th lay-data="{field:'classify', width:80}">职业</th>
-                    <th lay-data="{field:'wealth', width:135, sort: true}">财富</th>
-                    <th lay-data="{field:'score', width:80, sort: true, fixed: 'right'}">评分</th>
+                    <th lay-data="{field:'phone', width:80}">电话</th>
+                    <th lay-data="{field:'qqNumber', width:135, sort: true}">qq号</th>
+                    <th lay-data="{field:'createdTime', width:80, sort: true, fixed: 'right'}">创建时间</th>
                     <th lay-data="{fixed: 'right', width:160, align:'center', toolbar: '#barDemo'}"></th>
                 </tr>
                 </thead>
@@ -107,8 +107,8 @@
             </script>
 
 
-            <script src="/static/js/layui.js" charset="utf-8"></script>
-            <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+            <script src="/static/layui/layui.js" charset="utf-8"></script>
+             <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的-->
             <script>
                 layui.use('table', function(){
                     var table = layui.table;
@@ -152,13 +152,36 @@
                         var type = $(this).data('type');
                         active[type] ? active[type].call(this) : '';
                     });
+
+                    //渲染数据
+                    var adminId = 1;
+                    table.render({
+//                        cols: [[
+//                            {field: 'id', title:'ID', width: 100}
+//                            ,{field: 'id', title:'ID', width: 100}
+//                        ]]
+                        width: 892,
+                        height:332,
+                        page:true,
+                        elem : '#idTest',
+                        url: '/admin/'+adminId+'/student',
+                        //where: {token: 'sasasas', id: 123} //如果无需传递额外参数，可不加该参数
+                        method: 'get',
+                        request: {
+                            pageName: 'page',
+                            limitName: 'size'
+                        },
+                        response: {
+                            statusName: 'status',//数据状态的字段名称，默认：code
+                            statusCode: '200',//成功的状态码，默认：0
+                            msgName: 'msg',//状态信息的字段名称，默认：msg
+                            countName: 'totalElements',//数据总数的字段名称，默认：count
+                            dataName: 'content'//数据列表的字段名称，默认：data
+                        }
+                    })
                 });
 
-                //渲染数据
-                var adminId = 1;
-                table.render(
-                    url: '/admin/'+adminId+'/student'
-                )
+
             </script></div>
     </div>
 
@@ -167,7 +190,7 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<script src="/static/js/layui.js"></script>
+<script src="/static/layui/layui.js"></script>
 <script>
     //JavaScript代码区域
     layui.use('element', function(){
