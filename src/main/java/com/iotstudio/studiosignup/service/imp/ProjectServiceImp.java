@@ -1,12 +1,14 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.entity.ProjectType;
-import com.iotstudio.studiosignup.repository.ProjectTypeRepository;
-import com.iotstudio.studiosignup.service.ProjectTypeService;
+import com.iotstudio.studiosignup.entity.Project;
+import com.iotstudio.studiosignup.repository.ProjectRepository;
+import com.iotstudio.studiosignup.service.ProjectService;
+import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,22 +18,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ProjectTypeServiceImp implements ProjectTypeService {
+public class ProjectServiceImp implements ProjectService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectTypeServiceImp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectServiceImp.class);
 
     @Autowired
-    private ProjectTypeRepository projectTypeRepository;
+    private ProjectRepository projectRepository;
 
     @Override
-    public ResponseModel addOne(ProjectType projectType) {
-        return new ResponseModel(projectTypeRepository.save(projectType));
+    public ResponseModel addOne(Project project) {
+        return new ResponseModel(projectRepository.save(project));
     }
 
     @Override
     public ResponseModel deleteOneById(Integer id) {
         try {
-            projectTypeRepository.delete(id);
+            projectRepository.delete(id);
         }
         catch (Exception e){
             return new ResponseModel(HttpStatus.BAD_REQUEST.value(),ResponseModel.FAILED_MSG,e.getMessage());
@@ -40,18 +42,18 @@ public class ProjectTypeServiceImp implements ProjectTypeService {
     }
 
     @Override
-    public ResponseModel updateOne(ProjectType projectType) {
-        return new ResponseModel(projectTypeRepository.save(projectType));
+    public ResponseModel updateOne(Project project) {
+        return new ResponseModel(projectRepository.save(project));
     }
 
     @Override
     public ResponseModel selectOneById(Integer id) {
-        return new ResponseModel(projectTypeRepository.findOne(id));
+        return new ResponseModel(projectRepository.findOne(id));
     }
 
     @Override
     public ResponseModel selectAll() {
-        return new ResponseModel(projectTypeRepository.findAll());
+        return new ResponseModel(projectRepository.findAll());
     }
 
     @Override
@@ -59,6 +61,13 @@ public class ProjectTypeServiceImp implements ProjectTypeService {
         //建立分页请求，返回一个Pageable对象
         Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
         //根据分页请求查询所有实体
-        return new ResponseModel(projectTypeRepository.findAll(pageable));
+        Page<Project> projectPage = projectRepository.findAll(pageable);
+        PageDataModel projectPageDataModel =
+                new PageDataModel(
+                        projectPage.getTotalElements(),
+                        projectPage.getTotalPages(),
+                        projectPage.getContent()
+                );
+        return new ResponseModel(projectPageDataModel);
     }
 }

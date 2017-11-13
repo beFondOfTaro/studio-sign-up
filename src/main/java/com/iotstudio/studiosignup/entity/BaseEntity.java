@@ -10,7 +10,7 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Integer id;
 
     private Date createdTime;//创建时间
 
@@ -21,11 +21,11 @@ public class BaseEntity {
         this.createdTime = createdTime;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -1,12 +1,15 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.entity.SighUpInfo;
+import com.iotstudio.studiosignup.entity.SighUpInfo;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
+import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -59,6 +62,13 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
         //建立分页请求，返回一个Pageable对象
         Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
         //根据分页请求查询所有实体
-        return new ResponseModel(sighUpInfoRepository.findAll(pageable));
+        Page<SighUpInfo> sighUpInfoPage = sighUpInfoRepository.findAll(pageable);
+        PageDataModel sighUpInfoPageDataModel =
+                new PageDataModel(
+                        sighUpInfoPage.getTotalElements(),
+                        sighUpInfoPage.getTotalPages(),
+                        sighUpInfoPage.getContent()
+                );
+        return new ResponseModel(sighUpInfoPageDataModel);
     }
 }

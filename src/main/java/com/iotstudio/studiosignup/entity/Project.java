@@ -5,8 +5,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 项目的实体类
+ */
 @Entity
-public class ProjectType {
+public class Project {
 
     @Id
     @GeneratedValue
@@ -15,10 +18,10 @@ public class ProjectType {
     @NotNull
     private String name;//项目类型名
 
-    public ProjectType() {
+    public Project() {
     }
 
-    public ProjectType(String name) {
+    public Project(String name) {
         this.name = name;
     }
 

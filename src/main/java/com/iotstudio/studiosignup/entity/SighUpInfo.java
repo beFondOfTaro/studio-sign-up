@@ -1,15 +1,19 @@
 package com.iotstudio.studiosignup.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 public class SighUpInfo extends BaseEntity {
 
-    private Integer projectTypeId;//项目类型id
+    @ManyToOne(targetEntity = Project.class,cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "project_id",referencedColumnName = "id")
+    private Project project;//项目类型
 
-    private Integer studentId;//学生id
+    @ManyToOne(targetEntity = Student.class,cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "student_id",referencedColumnName = "id")
+    private Student student;//学生
 
     @NotNull
     private String personalIntroduction;//个人介绍
@@ -17,27 +21,27 @@ public class SighUpInfo extends BaseEntity {
     public SighUpInfo() {
     }
 
-    public SighUpInfo(Date createdDate, Integer projectTypeId, Integer studentId, String personalIntroduction) {
-        super(createdDate);
-        this.projectTypeId = projectTypeId;
-        this.studentId = studentId;
+    public SighUpInfo(Date createdTime, Project project, Student student, String personalIntroduction) {
+        super(createdTime);
+        this.project = project;
+        this.student = student;
         this.personalIntroduction = personalIntroduction;
     }
 
-    public Integer getProjectTypeId() {
-        return projectTypeId;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProjectTypeId(Integer projectTypeId) {
-        this.projectTypeId = projectTypeId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public Integer getStudentId() {
-        return studentId;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public String getPersonalIntroduction() {

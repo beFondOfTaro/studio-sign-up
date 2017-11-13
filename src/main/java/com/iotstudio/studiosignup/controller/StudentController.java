@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "admin"+"/{admin_id}")
+@RequestMapping(value = "admin/{admin_id}")
 public class StudentController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentController.class);
@@ -24,9 +24,14 @@ public class StudentController {
 //        return studentService.selectAll();
 //    }
 
+    /**
+     * 分页查询所有学生
+     * @param page 页码
+     * @param size 每一页的数量
+     */
     @GetMapping(value = entity)
     public ResponseModel studentListByPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size){
-        return studentService.selectAllByPage(page,size);
+        return studentService.selectAllByPage(page-1,size);
     }
 
     @GetMapping(value = entity+"/{id}")

@@ -6,7 +6,7 @@
 <#--maximum-scale=1-->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="/static/css/styles.css">
-    <title>学生列表</title>
+    <title>报名信息列表</title>
     <style type="text/css">
         body {
             background: #ffffff;
@@ -81,16 +81,16 @@
 <!-- 左侧导航条 -->
 <div class="sidebar">
     <div class="list-group">
-        <a href="/studenttable" class="list-group-item sidebar-li active">学生列表</a>
+        <a href="/studenttable" class="list-group-item sidebar-li">学生列表</a>
         <a href="/teachertable" class="list-group-item sidebar-li">教师列表</a>
-        <a href="/sighupinfotable" class="list-group-item sidebar-li">报名信息列表</a>
+        <a href="/sighupinfotable" class="list-group-item sidebar-li active">报名信息列表</a>
         <a href="projecttable" class="list-group-item sidebar-li">项目列表</a>
     </div>
 </div>
 <!-- 数据列表面板 -->
 <div class="container-fluid">
     <div id="dataPanel" class="panel panel-default">
-        <div class="panel-heading">学生列表</div>
+        <div class="panel-heading">报名信息列表</div>
         <div class="panel-body">
             <div class="table-responsive">
                 <table id="myTable" class="table table-hover table-striped">
@@ -109,35 +109,12 @@
         tableId: '#myTable',//绑定的表格元素Id
         cols: [[
             {field: 'id', title: 'ID'},
-            {field: 'username', title: '用户名'},
-            {field: 'password', title: '密码'},
-            {field: 'realName', title: '真实姓名'},
-            {field: 'studentNumber', title: '学号'},
-            {field: 'major', title: '专业'},
-            {field: 'phone', title: '电话'},
-            {field: 'qqNumber', title: 'qq号'},
+            {field: 'student', title: '学生'},
+            {field: 'project', title: '项目类型'},
+            {field: 'personalIntroduction', title: '个人简介'},
             {field: 'createdTime', title: '创建时间'}
         ]],//列的绑定,field为服务端数据包中对应的
-        actionCol: true,//是否生成数据操作操作列
-        pageNav: {
-            buttonNum: 6,//每页显示的按钮数量
-            navAriaLabel: 'PageNavigation',//翻页栏的aria-label属性，用于定位nav标签
-            beforeElem: '#myTable'//要在其之后生成翻页组件的元素id
-        },
-        url: '/admin/1/student',//请求的地址
-        method: 'get',//请求方法
-        request: {
-            page: 1,//分页的页码
-            size: 10 //一页的数量
-        },//请求的参数
-        response: {
-            statusName: 'status',//数据状态的字段名称
-            statusCode: '200',//成功的状态码
-            msgName: 'msg',//状态信息的字段名称
-            countName: 'totalElements',//数据总数的字段名称
-            totalPages: 'totalPages',//总页数
-            dataName: 'content'//数据列表的字段名称
-        }
+        url: '/admin/1/sighupinfo'//请求的地址
     };
     initMyTable(tableConfig);
 </script>
