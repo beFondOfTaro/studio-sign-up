@@ -46,6 +46,7 @@ public class StudentController {
 
     @PutMapping(value = entity)
     public ResponseModel studentUpdateOne(Student student){
+        LOGGER.info(student.toString());
         return studentService.updateOne(student);
     }
 

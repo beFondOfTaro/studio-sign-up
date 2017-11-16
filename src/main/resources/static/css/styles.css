@@ -128,3 +128,52 @@
             transform: translateY(-700px) rotate(600deg);
   }
 }
+
+body {
+  background: #ffffff;
+@font-family-base;
+@font-size-base;
+@line-height-base;
+@link-color;
+  padding-top: 40px;
+  padding-left: 150px;
+}
+
+#topNav {
+  margin-right: 40px;
+}
+
+#dataPanel {
+  margin: 100px;
+}
+
+.sidebar {
+  left: 0;
+  top: 40px;
+  border-width: 0 0 1px;
+  position: fixed;
+  z-index: 1030;
+  height: 100%;
+  background: black;
+  border-radius: 4px;
+}
+
+@media (min-width: 768px){
+    .sidebar {
+        border-radius: 0;
+    }
+}
+
+  .sidebar-li {
+    height: 42px;
+    width: 150px;
+    overflow: hidden;
+  }
+
+  .list-group {
+    opacity: 0.8;
+  }
+
+  #insertButton{
+    float: right;
+  }

@@ -1,8 +1,10 @@
 package com.iotstudio.studiosignup.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
 public class SighUpInfo extends BaseEntity {
@@ -21,8 +23,8 @@ public class SighUpInfo extends BaseEntity {
     public SighUpInfo() {
     }
 
-    public SighUpInfo(Date createdTime, Project project, Student student, String personalIntroduction) {
-        super(createdTime);
+    public SighUpInfo(Project project, Student student, String personalIntroduction) {
+        super();
         this.project = project;
         this.student = student;
         this.personalIntroduction = personalIntroduction;

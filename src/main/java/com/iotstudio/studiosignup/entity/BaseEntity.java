@@ -1,9 +1,11 @@
 package com.iotstudio.studiosignup.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 
 @MappedSuperclass
 public class BaseEntity {
@@ -12,12 +14,19 @@ public class BaseEntity {
     @GeneratedValue
     private Integer id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//序列化格式
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")//前端参数传递转换
+    @Column(insertable = false,updatable = false)//使该字段在新增和修改时不可用
     private Date createdTime;//创建时间
 
     public BaseEntity() {
     }
 
-    public BaseEntity(Date createdTime) {
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -29,11 +38,12 @@ public class BaseEntity {
         this.id = id;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", createdTime=" + createdTime +
+                '}';
     }
 }

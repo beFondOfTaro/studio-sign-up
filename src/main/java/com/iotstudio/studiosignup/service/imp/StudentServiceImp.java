@@ -1,6 +1,7 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.entity.Student;
+import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.StudentRepository;
 import com.iotstudio.studiosignup.service.StudentService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
@@ -16,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 @Service
 @Transactional
 public class StudentServiceImp implements StudentService {
@@ -25,6 +29,9 @@ public class StudentServiceImp implements StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private SighUpInfoRepository sighUpInfoRepository;
+
     @Override
     public ResponseModel addOne(Student student) {
         return new ResponseModel(studentRepository.save(student));
@@ -33,6 +40,9 @@ public class StudentServiceImp implements StudentService {
     @Override
     public ResponseModel deleteOneById(Integer id) {
         try {
+            Student student = new Student();
+            student.setId(id);
+            sighUpInfoRepository.deleteByStudent(student);
             studentRepository.delete(id);
         }
         catch (Exception e){
@@ -68,6 +78,7 @@ public class StudentServiceImp implements StudentService {
                         studentPage.getTotalPages(),
                         studentPage.getContent()
                 );
+        LOGGER.info(studentPage.getContent().get(1).toString());
         return new ResponseModel(studentPageDataModel);
     }
 }

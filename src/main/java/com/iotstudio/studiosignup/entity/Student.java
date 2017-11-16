@@ -1,8 +1,9 @@
 package com.iotstudio.studiosignup.entity;
 
+import com.iotstudio.studiosignup.util.Date;
+
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
 public class Student extends BaseEntity{
@@ -31,8 +32,8 @@ public class Student extends BaseEntity{
     public Student() {
     }
 
-    public Student(Date createdDate, String username, String password, String realName, String studentNumber, String major, String phone, String qqNumber) {
-        super(createdDate);
+    public Student(String username, String password, String realName, String studentNumber, String major, String phone, String qqNumber) {
+        super();
         this.username = username;
         this.password = password;
         this.realName = realName;
@@ -108,6 +109,6 @@ public class Student extends BaseEntity{
                 ", major='" + major + '\'' +
                 ", phone='" + phone + '\'' +
                 ", qqNumber='" + qqNumber + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

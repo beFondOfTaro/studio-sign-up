@@ -1,17 +1,10 @@
 package com.iotstudio.studiosignup.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
-public class Teacher {
-
-    @Id
-    @GeneratedValue
-    private Integer id;
+public class Teacher extends BaseEntity {
 
     @NotNull
     private String username;//用户名
@@ -28,26 +21,16 @@ public class Teacher {
     @NotNull
     private String phone;//电话
 
-    private Date createdTime;//创建时间
-
     public Teacher() {
     }
 
-    public Teacher(String username, String password, String realName, String teacherNumber, String phone, Date createdTime) {
+    public Teacher(String username, String password, String realName, String teacherNumber, String phone) {
+        super();
         this.username = username;
         this.password = password;
         this.realName = realName;
         this.teacherNumber = teacherNumber;
         this.phone = phone;
-        this.createdTime = createdTime;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -90,24 +73,14 @@ public class Teacher {
         this.phone = phone;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
     @Override
     public String toString() {
         return "Teacher{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", realName='" + realName + '\'' +
                 ", teacherNumber='" + teacherNumber + '\'' +
                 ", phone='" + phone + '\'' +
-                ", createdTime=" + createdTime +
-                '}';
+                "} " + super.toString();
     }
 }
