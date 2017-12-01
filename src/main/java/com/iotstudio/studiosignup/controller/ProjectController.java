@@ -1,6 +1,7 @@
 package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.entity.Project;
+import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.ProjectService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -30,7 +31,8 @@ public class ProjectController {
      * @param size 每一页的数量
      */
     @GetMapping(value = entity)
-    public ResponseModel projectListByPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size){
+    public ResponseModel projectListByPage(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                           @RequestParam(value = "size",defaultValue = "10") Integer size){
         return projectService.selectAllByPage(page-1,size);
     }
 
@@ -40,7 +42,10 @@ public class ProjectController {
     }
 
     @PostMapping(value = entity)
-    public ResponseModel projectAddOne(Project project){
+    public ResponseModel projectAddOne(Project project,@PathVariable("admin_id")Integer adminId){
+        User user = new User();
+        user.setId(adminId);
+        project.setUser(user);
         return projectService.addOne(project);
     }
 

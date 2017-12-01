@@ -9,13 +9,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class SighUpInfo extends BaseEntity {
 
-    @ManyToOne(targetEntity = Project.class,cascade = CascadeType.REFRESH)
+    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.MERGE})
     @JoinColumn(name = "project_id",referencedColumnName = "id")
     private Project project;//项目类型
 
-    @ManyToOne(targetEntity = Student.class,cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "student_id",referencedColumnName = "id")
-    private Student student;//学生
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;//学生
 
     @NotNull
     private String personalIntroduction;//个人介绍
@@ -23,10 +23,9 @@ public class SighUpInfo extends BaseEntity {
     public SighUpInfo() {
     }
 
-    public SighUpInfo(Project project, Student student, String personalIntroduction) {
-        super();
+    public SighUpInfo(Project project, User user, String personalIntroduction) {
         this.project = project;
-        this.student = student;
+        this.user = user;
         this.personalIntroduction = personalIntroduction;
     }
 
@@ -38,12 +37,12 @@ public class SighUpInfo extends BaseEntity {
         this.project = project;
     }
 
-    public Student getStudent() {
-        return student;
+    public User getUser() {
+        return user;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getPersonalIntroduction() {
@@ -52,5 +51,14 @@ public class SighUpInfo extends BaseEntity {
 
     public void setPersonalIntroduction(String personalIntroduction) {
         this.personalIntroduction = personalIntroduction;
+    }
+
+    @Override
+    public String toString() {
+        return "SighUpInfo{" +
+                "project=" + project +
+                ", user=" + user +
+                ", personalIntroduction='" + personalIntroduction + '\'' +
+                "} " + super.toString();
     }
 }

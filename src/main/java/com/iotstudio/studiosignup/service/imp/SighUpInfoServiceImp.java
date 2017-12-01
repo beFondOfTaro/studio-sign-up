@@ -1,8 +1,11 @@
 package com.iotstudio.studiosignup.service.imp;
 
+import com.iotstudio.studiosignup.entity.Project;
 import com.iotstudio.studiosignup.entity.SighUpInfo;
-import com.iotstudio.studiosignup.entity.SighUpInfo;
+import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.repository.ProjectRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
+import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
@@ -25,6 +28,10 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
 
     @Autowired
     private SighUpInfoRepository sighUpInfoRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public ResponseModel addOne(SighUpInfo sighUpInfo) {
@@ -45,6 +52,11 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     @Override
     public ResponseModel updateOne(SighUpInfo sighUpInfo) {
         return new ResponseModel(sighUpInfoRepository.save(sighUpInfo));
+    }
+
+    @Override
+    public ResponseModel updateOne(SighUpInfo sighUpInfo, Integer userId, String projectName) {
+        return addOne(sighUpInfo,userId,projectName);
     }
 
     @Override
@@ -70,5 +82,34 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
                         sighUpInfoPage.getContent()
                 );
         return new ResponseModel(sighUpInfoPageDataModel);
+    }
+
+    @Override
+    public ResponseModel addOne(SighUpInfo sighUpInfo, Integer userId, String projectName) {
+        User user = new User();
+        user.setId(userId);
+        sighUpInfo.setUser(user);
+        Project project = projectRepository.findProjectByName(projectName);
+        sighUpInfo.setProject(project);
+        return new ResponseModel(sighUpInfoRepository.save(sighUpInfo));
+    }
+
+    @Override
+    public ResponseModel addOne(SighUpInfo sighUpInfo, String username, String projectName) {
+        User user = userRepository.findByUsername(username);
+        if (user == null){
+            String msg = "用户"+ username +"不存在！";
+            LOGGER.warn(msg);
+            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),msg,null);
+        }
+        sighUpInfo.setUser(user);
+        Project project = projectRepository.findProjectByName(projectName);
+        sighUpInfo.setProject(project);
+        return new ResponseModel(sighUpInfoRepository.save(sighUpInfo));
+    }
+
+    @Override
+    public ResponseModel updateOne(SighUpInfo sighUpInfo, String username, String projectName) {
+        return addOne(sighUpInfo,username,projectName);
     }
 }

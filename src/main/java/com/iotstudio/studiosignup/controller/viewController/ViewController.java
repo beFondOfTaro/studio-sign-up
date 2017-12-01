@@ -30,4 +30,9 @@ public class ViewController {
     public String projectTable(){
         return "/projectTable";
     }
+
+    @GetMapping("/usertable")
+    public String userTable(){
+        return "/userTable";
+    }
 }

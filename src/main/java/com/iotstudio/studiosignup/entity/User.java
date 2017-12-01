@@ -1,12 +1,17 @@
 package com.iotstudio.studiosignup.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Teacher extends BaseEntity {
+public class User extends BaseEntity {
+
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinColumn(name = "role_id",referencedColumnName = "id")
+    private Role role;
 
     @NotNull
+    @Column(unique = true)
     private String username;//用户名
 
     @NotNull
@@ -16,21 +21,25 @@ public class Teacher extends BaseEntity {
     private String realName;//真实姓名
 
     @NotNull
-    private String teacherNumber;//工号
-
-    @NotNull
     private String phone;//电话
 
-    public Teacher() {
+    public User() {
     }
 
-    public Teacher(String username, String password, String realName, String teacherNumber, String phone) {
-        super();
+    public User(Role role, String username, String password, String realName, String phone) {
+        this.role = role;
         this.username = username;
         this.password = password;
         this.realName = realName;
-        this.teacherNumber = teacherNumber;
         this.phone = phone;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -57,14 +66,6 @@ public class Teacher extends BaseEntity {
         this.realName = realName;
     }
 
-    public String getTeacherNumber() {
-        return teacherNumber;
-    }
-
-    public void setTeacherNumber(String teacherNumber) {
-        this.teacherNumber = teacherNumber;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -75,11 +76,11 @@ public class Teacher extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Teacher{" +
-                "username='" + username + '\'' +
+        return "User{" +
+                "role=" + role +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", realName='" + realName + '\'' +
-                ", teacherNumber='" + teacherNumber + '\'' +
                 ", phone='" + phone + '\'' +
                 "} " + super.toString();
     }

@@ -158,12 +158,6 @@ body {
   border-radius: 4px;
 }
 
-@media (min-width: 768px){
-    .sidebar {
-        border-radius: 0;
-    }
-}
-
   .sidebar-li {
     height: 42px;
     width: 150px;
@@ -176,4 +170,8 @@ body {
 
   #insertButton{
     float: right;
+  }
+  .alert{
+    z-index: 6000;
+    margin: auto 200px;
   }

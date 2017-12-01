@@ -1,8 +1,8 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.entity.Teacher;
-import com.iotstudio.studiosignup.repository.TeacherRepository;
-import com.iotstudio.studiosignup.service.TeacherService;
+import com.iotstudio.studiosignup.entity.Role;
+import com.iotstudio.studiosignup.repository.RoleRepository;
+import com.iotstudio.studiosignup.service.RoleService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -18,22 +18,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class TeacherServiceImp implements TeacherService {
+public class RoleServiceImp implements RoleService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TeacherServiceImp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImp.class);
 
     @Autowired
-    private TeacherRepository teacherRepository;
+    private RoleRepository roleRepository;
 
     @Override
-    public ResponseModel addOne(Teacher teacher) {
-        return new ResponseModel(teacherRepository.save(teacher));
+    public ResponseModel addOne(Role role) {
+        return new ResponseModel(roleRepository.save(role));
     }
 
     @Override
     public ResponseModel deleteOneById(Integer id) {
         try {
-            teacherRepository.delete(id);
+            roleRepository.delete(id);
         }
         catch (Exception e){
             return new ResponseModel(HttpStatus.BAD_REQUEST.value(),ResponseModel.FAILED_MSG,e.getMessage());
@@ -42,18 +42,18 @@ public class TeacherServiceImp implements TeacherService {
     }
 
     @Override
-    public ResponseModel updateOne(Teacher teacher) {
-        return new ResponseModel(teacherRepository.save(teacher));
+    public ResponseModel updateOne(Role role) {
+        return new ResponseModel(roleRepository.save(role));
     }
 
     @Override
     public ResponseModel selectOneById(Integer id) {
-        return new ResponseModel(teacherRepository.findOne(id));
+        return new ResponseModel(roleRepository.findOne(id));
     }
 
     @Override
     public ResponseModel selectAll() {
-        return new ResponseModel(teacherRepository.findAll());
+        return new ResponseModel(roleRepository.findAll());
     }
 
     @Override
@@ -61,13 +61,13 @@ public class TeacherServiceImp implements TeacherService {
         //建立分页请求，返回一个Pageable对象
         Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
         //根据分页请求查询所有实体
-        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
-        PageDataModel teacherPageDataModel =
+        Page<Role> rolePage = roleRepository.findAll(pageable);
+        PageDataModel rolePageDataModel =
                 new PageDataModel(
-                        teacherPage.getTotalElements(),
-                        teacherPage.getTotalPages(),
-                        teacherPage.getContent()
+                        rolePage.getTotalElements(),
+                        rolePage.getTotalPages(),
+                        rolePage.getContent()
                 );
-        return new ResponseModel(teacherPageDataModel);
+        return new ResponseModel(rolePageDataModel);
     }
 }

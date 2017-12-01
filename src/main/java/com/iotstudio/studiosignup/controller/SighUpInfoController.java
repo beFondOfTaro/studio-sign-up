@@ -40,13 +40,17 @@ public class SighUpInfoController {
     }
 
     @PostMapping(value = entity)
-    public ResponseModel sighUpInfoAddOne(SighUpInfo sighUpInfo){
-        return sighUpInfoService.addOne(sighUpInfo);
+    public ResponseModel sighUpInfoAddOne(SighUpInfo sighUpInfo,
+                                          @RequestParam("username")String username,
+                                          @RequestParam("projectName")String projectName){
+        return sighUpInfoService.addOne(sighUpInfo,username,projectName);
     }
 
     @PutMapping(value = entity)
-    public ResponseModel sighUpInfoUpdateOne(SighUpInfo sighUpInfo){
-        return sighUpInfoService.updateOne(sighUpInfo);
+    public ResponseModel sighUpInfoUpdateOne(SighUpInfo sighUpInfo,
+                                             @RequestParam("username")String username,
+                                             @RequestParam("projectName")String projectName){
+        return sighUpInfoService.updateOne(sighUpInfo,username,projectName);
     }
 
     @DeleteMapping(value = entity+"/{id}")

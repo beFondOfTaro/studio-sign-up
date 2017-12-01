@@ -276,8 +276,8 @@ if (typeof jQuery === 'undefined') {
   }
 
 
-  // BUTTON DATA-API
-  // ===============
+    // BUTTON DATA-API
+    // ===============
 
   $(document)
     .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
