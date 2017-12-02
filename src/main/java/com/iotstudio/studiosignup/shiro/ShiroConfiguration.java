@@ -28,7 +28,7 @@ public class ShiroConfiguration {
         //设置拦截器
         factoryBean.getFilters().put("statelessAuthc",accessControllerFilter());
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/**", "statelessAuthc");
+        filterChainDefinitionMap.put("/admin/**", "statelessAuthc");
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;
     }

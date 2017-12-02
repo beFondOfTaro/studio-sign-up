@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CookieUtil {
+    public static final String clientDigestKey = "digest";
+    public static final String clientIdKey = "client_id";
+    public static final String currentTimeKey = "currentTime";
 
     /**
      * 设置cookie
@@ -30,11 +33,7 @@ public class CookieUtil {
      */
     public static Cookie getCookieByName(HttpServletRequest request, String name){
         Map<String,Cookie> cookieMap = ReadCookieMap(request);
-        if(cookieMap.containsKey(name)){
-            return cookieMap.get(name);
-        }else{
-            return null;
-        }
+        return cookieMap.getOrDefault(name,null);
     }
 
     /**

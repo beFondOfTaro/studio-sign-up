@@ -6,6 +6,8 @@ import com.iotstudio.studiosignup.repository.RoleRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.UserService;
+import com.iotstudio.studiosignup.shiro.StatelessAuthenticationToken;
+import com.iotstudio.studiosignup.shiro.token.TokenUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -17,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -99,5 +104,33 @@ public class UserServiceImp implements UserService {
         Role role = roleRepository.findRoleByName(roleName);
         user.setRole(role);
         return new ResponseModel(userRepository.save(user));
+    }
+
+    @Override
+    public ResponseModel login(String username, String password) {
+        String msg;
+        User user = userRepository.findByUsername(username);
+        if (user == null){
+            msg = "用户不存在!";
+            return new ResponseModel(false,msg,null);
+        }else {
+            if (user.getPassword().equals(password)){
+                //创建消息摘要
+                String digest = TokenUtil.createDigest(new StatelessAuthenticationToken(user.getId().toString()),user.getPassword());
+                msg = "登录成功！";
+                user.setPassword(null);
+                Map<String,Object> data = new HashMap<>();
+                data.put("digest",digest);
+                return new ResponseModel(true,msg,data);
+            }else {
+                msg = "用户名或密码错误！";
+                return new ResponseModel(false,msg,null);
+            }
+        }
+    }
+
+    @Override
+    public ResponseModel logout(String userId) {
+        return null;
     }
 }

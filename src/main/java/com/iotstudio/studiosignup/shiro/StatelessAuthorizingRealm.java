@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.shiro.token.TokenUtil;
 import com.iotstudio.studiosignup.util.HmacSHA256Utils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -31,22 +32,11 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-
         LOGGER.info("StatelessRealm.doGetAuthenticationInfo()");
         StatelessAuthenticationToken token = (StatelessAuthenticationToken)authenticationToken;
         String userId = (String)token.getPrincipal();//不能为null，否则会报错
-
-        //根据用户名获取秘钥（和客户端的一样）
-        String key = getKey(userId);
-        //在服务器端生成客户端参数消息摘要
-        String serverDigest = HmacSHA256Utils.digest(key,token.getParams());
-        LOGGER.info(serverDigest+","+token.getCredentials());
         //然后进行客户端消息摘要和服务器端消息摘要的匹配
-        return new SimpleAuthenticationInfo(
-                userId,
-                serverDigest,
-                getName()
-        );
+        return TokenUtil.validTokenBySimpleAuthenticationInfo(userId,getName());
     }
 
     /**
@@ -67,7 +57,4 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         return  authorizationInfo;
     }
 
-    private String getKey(String userId){
-        return "123aasd";
-    }
 }

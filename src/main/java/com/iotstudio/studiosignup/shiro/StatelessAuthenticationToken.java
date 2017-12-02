@@ -1,7 +1,10 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.authc.AuthenticationToken;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +17,11 @@ public class StatelessAuthenticationToken implements AuthenticationToken {
 
     private static final long serialVersionUID = 1L;
     private String userId;//用户身份即用户id；
-    private Map<String,String> params;//参数.
+    private Map<String,String> params = new HashMap<>();//参数.
     private String clientDigest;//凭证即客户端传入的消息摘要。
 
     public StatelessAuthenticationToken() {
+        params.put(CookieUtil.currentTimeKey, String.valueOf(new Date().getTime()));//当前时间
     }
     public StatelessAuthenticationToken(String userId, Map<String, String> params, String clientDigest) {
         super();
@@ -30,6 +34,11 @@ public class StatelessAuthenticationToken implements AuthenticationToken {
         super();
         this.userId = userId;
         this.clientDigest = clientDigest;
+    }
+
+    public StatelessAuthenticationToken(String userId) {
+        super();
+        this.userId = userId;
     }
 
     @Override
