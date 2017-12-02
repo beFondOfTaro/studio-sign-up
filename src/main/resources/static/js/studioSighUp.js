@@ -9,7 +9,7 @@ function fillDeleteUserModal(modalId) {
     setRowIndex(deleteModal);
     deleteModal.on('shown.bs.modal', function (e) {
         var modalBody = deleteModal.find('.modal-body');
-        modalBody[0].innerHTML = '删除用户将会删除其所有报名信息！<br>确定删除用户名为' + getValueByName(getCurrentEntity(),'username') + '的用户吗？';
+        modalBody[0].innerHTML = '删除用户将会删除其所有报名信息！<br>确定删除用户名为' + getValueByName(getCurrentEntity(), 'username') + '的用户吗？';
     });
 }
 
@@ -21,8 +21,8 @@ function fillRoleSelect() {
         success: function (data) {
             var roleSelectHTML = '';
             var roleList = data.data.content;
-            for (var role of roleList){
-                roleSelectHTML = roleSelectHTML + '<option>'+ role.name +'</option>';
+            for (var role of roleList) {
+                roleSelectHTML = roleSelectHTML + '<option>' + role.name + '</option>';
                 roleSelect.html(roleSelectHTML);
             }
         }
@@ -78,7 +78,7 @@ function fillDeleteProjectModal(modalId) {
     setRowIndex(deleteModal);
     deleteModal.on('shown.bs.modal', function (e) {
         var modalBody = deleteModal.find('.modal-body');
-        modalBody[0].innerHTML = '删除项目将会删除其下所有报名信息！<br>确定删除项目名为' + getValueByName(getCurrentEntity(),'name') + '的项目吗？';
+        modalBody[0].innerHTML = '删除项目将会删除其下所有报名信息！<br>确定删除项目名为' + getValueByName(getCurrentEntity(), 'name') + '的项目吗？';
     });
 }
 
@@ -129,32 +129,35 @@ function fillDeleteSighUpInfoModal(modalId) {
     setRowIndex(deleteModal);
     deleteModal.on('shown.bs.modal', function (e) {
         var modalBody = deleteModal.find('.modal-body');
-        modalBody[0].innerHTML = '确定删除学生 ' + getValueByName(getCurrentEntity(),'user.realName') + ' 的报名信息吗？';
+        modalBody[0].innerHTML = '确定删除学生 ' + getValueByName(getCurrentEntity(), 'user.realName') + ' 的报名信息吗？';
     });
 }
 
-function fillProjectSelect(selectId) {
+function fillProjectSelect(selectIdList) {
     fillSelect({
-        selectId:selectId,
-        type:'get',
-        url:'/admin/1/project'
+        selectIdList: selectIdList,
+        type: 'get',
+        url: '/admin/1/project'
     });
 }
+
 function fillSelect(params) {
-    var select = $(params.selectId);
     $.ajax({
         type: params.type,
         url: params.url,
         success: function (data) {
-            var selectHTML = '';
-            var entityList = data.data.content;
-            for (var entity of entityList){
-                selectHTML = selectHTML + '<option>'+ entity.name +'</option>';
-                select.html(selectHTML);
+            for (var selectId of params.selectIdList) {
+                var select = $(selectId);
+                var selectHTML = '';
+                for (var entity of data.data.content) {
+                    selectHTML = selectHTML + '<option>' + entity.name + '</option>';
+                    select.html(selectHTML);
+                }
             }
         }
     });
 }
+
 function updateSighUpInfo() {
     $.ajax({
         type: 'put',
@@ -190,4 +193,5 @@ function deleteSighUpInfo(sighUpInfoId) {
         }
     });
 }
+
 //sighUpInfoTable页面结束

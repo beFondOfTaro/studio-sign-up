@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +45,7 @@ public class UserServiceImp implements UserService {
             userRepository.delete(id);
         }
         catch (Exception e){
-            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),ResponseModel.FAILED_MSG,e.getMessage());
+            return new ResponseModel(false,ResponseModel.FAILED_MSG,e.getMessage());
         }
         return new ResponseModel();
     }
@@ -95,7 +94,7 @@ public class UserServiceImp implements UserService {
         if (existedUser != null){
             String msg = "用户名"+ username +"已经存在！";
             LOGGER.warn(msg);
-            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),msg,null);
+            return new ResponseModel(false,msg,null);
         }
         Role role = roleRepository.findRoleByName(roleName);
         user.setRole(role);

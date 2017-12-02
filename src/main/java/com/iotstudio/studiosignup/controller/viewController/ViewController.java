@@ -3,23 +3,11 @@ package com.iotstudio.studiosignup.controller.viewController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * 视图url映射
+ */
 @Controller
 public class ViewController {
-
-    @GetMapping("/admincenter")
-    public String adminCenter(){
-        return "/admin";
-    }
-
-    @GetMapping("/studenttable")
-    public String studentTable(){
-        return "/studentTable";
-    }
-    
-    @GetMapping("/teachertable")
-    public String teacherTable(){
-        return "/teacherTable";
-    }
     
     @GetMapping("/sighupinfotable")
     public String sighUpInfoTable(){

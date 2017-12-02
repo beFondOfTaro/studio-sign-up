@@ -225,8 +225,7 @@
     tableConfig = initMyTable(tableConfig);//务必将返回值给到参数
     fillModalForm('#updateModal','#updateSighUpInfo');//在点击修改按钮后，填充修改信息的模态框的表单
     fillDeleteSighUpInfoModal('#deleteModal');
-    fillProjectSelect('#projectTypeList');
-    fillProjectSelect('#projectTypeList1');
+    fillProjectSelect(['#projectTypeList','#projectTypeList1']);
 
 </script>
 

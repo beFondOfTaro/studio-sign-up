@@ -1,42 +1,40 @@
 package com.iotstudio.studiosignup.util.model;
 
-import org.springframework.http.HttpStatus;
-
 public class ResponseModel {
 
     public static final String SUCCESS_MSG = "success";
 
     public static final String FAILED_MSG = "failed";
 
-    private Integer status;
+    private boolean successful;
 
     private String msg;
 
     private Object data;
 
     public ResponseModel() {
-        this.status = HttpStatus.OK.value();
+        this.successful = true;
         this.msg = SUCCESS_MSG;
     }
 
     public ResponseModel(Object data) {
-        this.status = HttpStatus.OK.value();
+        this.successful = true;
         this.msg = SUCCESS_MSG;
         this.data = data;
     }
 
-    public ResponseModel(Integer status, String msg, Object data) {
-        this.status = status;
+    public ResponseModel(boolean successful, String msg, Object data) {
+        this.successful = successful;
         this.msg = msg;
         this.data = data;
     }
 
-    public Integer getStatus() {
-        return status;
+    public boolean isSuccessful() {
+        return successful;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setSuccessful(boolean successful) {
+        this.successful = successful;
     }
 
     public String getMsg() {

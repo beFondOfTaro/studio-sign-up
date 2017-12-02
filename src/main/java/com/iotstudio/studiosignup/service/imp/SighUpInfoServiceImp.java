@@ -44,7 +44,7 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
             sighUpInfoRepository.delete(id);
         }
         catch (Exception e){
-            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),ResponseModel.FAILED_MSG,e.getMessage());
+            return new ResponseModel(false,ResponseModel.FAILED_MSG,e.getMessage());
         }
         return new ResponseModel();
     }
@@ -100,7 +100,7 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
         if (user == null){
             String msg = "用户"+ username +"不存在！";
             LOGGER.warn(msg);
-            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),msg,null);
+            return new ResponseModel(false,msg,null);
         }
         sighUpInfo.setUser(user);
         Project project = projectRepository.findProjectByName(projectName);

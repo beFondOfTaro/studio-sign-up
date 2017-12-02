@@ -43,7 +43,7 @@ public class ProjectServiceImp implements ProjectService {
             projectRepository.delete(id);
         }
         catch (Exception e){
-            return new ResponseModel(HttpStatus.BAD_REQUEST.value(),ResponseModel.FAILED_MSG,e.getMessage());
+            return new ResponseModel(false,ResponseModel.FAILED_MSG,e.getMessage());
         }
         return new ResponseModel();
     }
