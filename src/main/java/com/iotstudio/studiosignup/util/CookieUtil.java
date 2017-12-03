@@ -1,5 +1,7 @@
 package com.iotstudio.studiosignup.util;
 
+import com.iotstudio.studiosignup.shiro.token.TokenUtil;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,15 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
+    /**
+     * 设置cookie，默认过期时间为token的过期时间
+     * @param response
+     * @param k
+     * @param v
+     */
+    public static void addCookie(HttpServletResponse response,String k, String v){
+        addCookie(response,k,v,(int) TokenUtil.DEFAULT_EXPIRATION_TIME*86400);//转换单位为秒
+    }
     /**
      * 根据名字获取cookie
      * @param request 请求

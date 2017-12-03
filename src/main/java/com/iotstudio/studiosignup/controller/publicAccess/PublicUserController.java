@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class PublicUserController {
@@ -23,8 +24,9 @@ public class PublicUserController {
 
     @PostMapping(value = entity+"/login")
     public ResponseModel userLogin(@RequestParam("username")String username,
-                                   @RequestParam("password")String password){
-        return userService.login(username,password);
+                                   @RequestParam("password")String password,
+                                   HttpServletResponse response){
+        return userService.login(response,username,password);
     }
 
     @DeleteMapping(value = entity+"/logout")

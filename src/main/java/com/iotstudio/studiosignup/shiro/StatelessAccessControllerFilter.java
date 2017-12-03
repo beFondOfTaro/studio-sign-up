@@ -5,19 +5,19 @@ import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class StatelessAccessControllerFilter extends AccessControlFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatelessAccessControllerFilter.class);
+    @Autowired
+    private TokenUtil tokenUtil;
     /**
      * 先执行：isAccessAllowed 再执行onAccessDenied
      * isAccessAllowed：表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，
@@ -41,8 +41,8 @@ public class StatelessAccessControllerFilter extends AccessControlFilter {
             //5、委托给Realm进行登录
             getSubject(servletRequest, servletResponse).login(token);
             //登录成功后设置cookie保存登录状态
-            TokenUtil.setCookie(httpServletResponse,CookieUtil.clientIdKey, clientId);
-            TokenUtil.setCookie(httpServletResponse,CookieUtil.clientDigestKey,clientDigest);
+            CookieUtil.addCookie(httpServletResponse,CookieUtil.clientIdKey, clientId);
+            CookieUtil.addCookie(httpServletResponse,CookieUtil.clientDigestKey,clientDigest);
         } catch (NullPointerException e) {
             LOGGER.error("已拦截请求！"+ CookieUtil.clientIdKey + "或" + CookieUtil.clientDigestKey+ "不能为空！");
             return false;

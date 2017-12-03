@@ -12,10 +12,13 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatelessAuthorizingRealm extends AuthorizingRealm {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatelessAuthorizingRealm.class);
+    @Autowired
+    private TokenUtil tokenUtil;
     /**
      * 仅支持StatelessToken 类型的Token，
      * 那么如果在StatelessAuthcFilter类中返回的是UsernamePasswordToken，那么将会报如下错误信息：
@@ -36,7 +39,7 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         StatelessAuthenticationToken token = (StatelessAuthenticationToken)authenticationToken;
         String userId = (String)token.getPrincipal();//不能为null，否则会报错
         //然后进行客户端消息摘要和服务器端消息摘要的匹配
-        return TokenUtil.validTokenBySimpleAuthenticationInfo(userId,getName());
+        return tokenUtil.validTokenBySimpleAuthenticationInfo(userId,getName());
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.iotstudio.studiosignup.service.imp;
 
+import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
+import com.iotstudio.studiosignup.dto.UserDto;
 import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.repository.RoleRepository;
@@ -8,6 +10,7 @@ import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.shiro.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
+import com.iotstudio.studiosignup.util.CookieUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,8 @@ public class UserServiceImp implements UserService {
     private SighUpInfoRepository sighUpInfoRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private TokenUtil tokenUtil;
 
     @Override
     public ResponseModel addOne(User user) {
@@ -107,7 +113,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ResponseModel login(String username, String password) {
+    public ResponseModel login(HttpServletResponse response,String username, String password) {
         String msg;
         User user = userRepository.findByUsername(username);
         if (user == null){
@@ -116,11 +122,12 @@ public class UserServiceImp implements UserService {
         }else {
             if (user.getPassword().equals(password)){
                 //创建消息摘要
-                String digest = TokenUtil.createDigest(new StatelessAuthenticationToken(user.getId().toString()),user.getPassword());
+                String digest = tokenUtil.createDigest(new StatelessAuthenticationToken(user.getId().toString()),user.getPassword());
                 msg = "登录成功！";
-                user.setPassword(null);
                 Map<String,Object> data = new HashMap<>();
                 data.put("digest",digest);
+                data.put("userDto",User2UserDtoConverter.convert(user));
+                CookieUtil.addCookie(response,CookieUtil.clientDigestKey,digest);
                 return new ResponseModel(true,msg,data);
             }else {
                 msg = "用户名或密码错误！";
@@ -131,6 +138,23 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseModel logout(String userId) {
-        return null;
+        String msg;
+        ResponseModel responseModel;
+        if (tokenUtil.getToken(userId) == null){
+            msg = "用户已经注销！";
+            LOGGER.info(msg);
+            responseModel = new ResponseModel(msg);
+        }else {
+            if (tokenUtil.deleteToken(Integer.valueOf(userId))){
+                msg = "注销成功！";
+                LOGGER.info(msg);
+                responseModel = new ResponseModel(true,msg,null);
+            }else {
+                msg = "注销失败!";
+                responseModel =  new ResponseModel(msg);
+            }
+        }
+        LOGGER.info(msg);
+        return responseModel;
     }
 }
