@@ -1,11 +1,10 @@
-package com.iotstudio.studiosignup.shiro;
+package com.iotstudio.studiosignup.shiro.Filter;
 
-import com.iotstudio.studiosignup.shiro.token.TokenUtil;
+import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -16,8 +15,6 @@ import java.io.IOException;
 public class StatelessAccessControllerFilter extends AccessControlFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StatelessAccessControllerFilter.class);
-    @Autowired
-    private TokenUtil tokenUtil;
     /**
      * 先执行：isAccessAllowed 再执行onAccessDenied
      * isAccessAllowed：表示是否允许访问；mappedValue就是[urls]配置中拦截器参数部分，

@@ -1,11 +1,13 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.repository.RoleRepository;
+import com.iotstudio.studiosignup.repository.UserRepository;
+import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
-import com.iotstudio.studiosignup.util.HmacSHA256Utils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -19,6 +21,8 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatelessAuthorizingRealm.class);
     @Autowired
     private TokenUtil tokenUtil;
+    @Autowired
+    private UserRepository userRepository;
     /**
      * 仅支持StatelessToken 类型的Token，
      * 那么如果在StatelessAuthcFilter类中返回的是UsernamePasswordToken，那么将会报如下错误信息：
@@ -52,11 +56,9 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         //根据用户名查找角色，请根据需求实现
         String userId = (String) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-
-        //这里模拟admin帐号才有role权限
-        if (userId.equals("1")){
-            authorizationInfo.addRole("admin");
-        }
+        //查询user的角色并添加
+        User user = userRepository.findOne(Integer.valueOf(userId));
+        authorizationInfo.addRole(user.getRole().getName());
         return  authorizationInfo;
     }
 

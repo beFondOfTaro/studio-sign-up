@@ -17,7 +17,7 @@ public class TeacherInfoController {
     @Autowired
     private TeacherInfoService teacherInfoService;
 
-    private final String entity = "teacherinfo";
+    private final String entity = "teacherInfo";
 
 //    @GetMapping(value = entity)
 //    public ResponseModel teacherInfoList(){

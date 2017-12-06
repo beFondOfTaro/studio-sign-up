@@ -17,7 +17,7 @@ public class SighUpInfoController {
     @Autowired
     private SighUpInfoService sighUpInfoService;
 
-    private final String entity = "sighupinfo";
+    private final String entity = "sighUpInfo";
 
 //    @GetMapping(value = entity)
 //    public ResponseModel sighUpInfoList(){

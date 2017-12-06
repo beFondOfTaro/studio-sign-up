@@ -1,4 +1,4 @@
-package com.iotstudio.studiosignup.shiro;
+package com.iotstudio.studiosignup.shiro.token;
 
 import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.authc.AuthenticationToken;

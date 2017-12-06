@@ -1,13 +1,16 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.shiro.Filter.StatelessAccessControllerFilter;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.mgt.SecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,9 +29,15 @@ public class ShiroConfiguration {
         factoryBean.setSecurityManager(securityManager);
 
         //设置拦截器
-        factoryBean.getFilters().put("statelessAuthc",accessControllerFilter());
+        String statelessAccessControllerFilter = "statelessAuthc";
+        factoryBean.getFilters().put(statelessAccessControllerFilter,accessControllerFilter());
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/admin/**", "statelessAuthc");
+        //公共访问的url
+        filterChainDefinitionMap.put("/login","anon");
+        filterChainDefinitionMap.put("swagger-ui.html","anon");
+
+        filterChainDefinitionMap.put("/admin/**", statelessAccessControllerFilter);
+        filterChainDefinitionMap.put("/user/**",statelessAccessControllerFilter);
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;
     }
@@ -47,7 +56,7 @@ public class ShiroConfiguration {
         securityManager.setSessionManager(sessionManager());
         //设置Realm
         securityManager.setRealm(statelessAuthorizingRealm());
-        /**
+        /*
          * 禁用使用Session作为存储策略的实现，但是它没有完全地禁用Session
          * 所以需要配合context.setSessionCreationEnabled(false);
          */
@@ -84,5 +93,31 @@ public class ShiroConfiguration {
     @Bean
     public StatelessAuthorizingRealm statelessAuthorizingRealm(){
         return new StatelessAuthorizingRealm();
+    }
+
+    /**
+     *  Add.5.1
+     *  开启shiro aop注解支持.
+     *  使用代理方式;所以需要开启代码支持;
+     * @param securityManager
+     * @return
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
+
+    /**
+     * Add.5.2
+     *   自动代理所有的advisor:
+     *   由Advisor决定对哪些类的方法进行AOP代理。
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
+        daap.setProxyTargetClass(true);
+        return daap;
     }
 }

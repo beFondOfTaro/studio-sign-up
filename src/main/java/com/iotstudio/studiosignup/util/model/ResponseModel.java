@@ -29,6 +29,17 @@ public class ResponseModel {
         this.data = null;
     }
 
+    public ResponseModel(boolean successful, String msg) {
+        this.successful = successful;
+        this.msg = msg;
+    }
+
+    public ResponseModel(String msg, Object data) {
+        this.successful = true;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public ResponseModel(boolean successful, String msg, Object data) {
         this.successful = successful;
         this.msg = msg;

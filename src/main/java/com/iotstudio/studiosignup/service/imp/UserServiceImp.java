@@ -1,14 +1,13 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
-import com.iotstudio.studiosignup.dto.UserDto;
 import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.repository.RoleRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.UserService;
-import com.iotstudio.studiosignup.shiro.StatelessAuthenticationToken;
+import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
@@ -115,10 +114,11 @@ public class UserServiceImp implements UserService {
     @Override
     public ResponseModel login(HttpServletResponse response,String username, String password) {
         String msg;
+        ResponseModel responseModel;
         User user = userRepository.findByUsername(username);
         if (user == null){
             msg = "用户不存在!";
-            return new ResponseModel(false,msg,null);
+            responseModel = new ResponseModel(false,msg,null);
         }else {
             if (user.getPassword().equals(password)){
                 //创建消息摘要
@@ -128,12 +128,14 @@ public class UserServiceImp implements UserService {
                 data.put("digest",digest);
                 data.put("userDto",User2UserDtoConverter.convert(user));
                 CookieUtil.addCookie(response,CookieUtil.clientDigestKey,digest);
-                return new ResponseModel(true,msg,data);
+                responseModel = new ResponseModel(true,msg,data);
             }else {
                 msg = "用户名或密码错误！";
-                return new ResponseModel(false,msg,null);
+                responseModel = new ResponseModel(false,msg,null);
             }
         }
+        LOGGER.info(msg);
+        return responseModel;
     }
 
     @Override
@@ -142,12 +144,10 @@ public class UserServiceImp implements UserService {
         ResponseModel responseModel;
         if (tokenUtil.getToken(userId) == null){
             msg = "用户已经注销！";
-            LOGGER.info(msg);
             responseModel = new ResponseModel(msg);
         }else {
             if (tokenUtil.deleteToken(Integer.valueOf(userId))){
                 msg = "注销成功！";
-                LOGGER.info(msg);
                 responseModel = new ResponseModel(true,msg,null);
             }else {
                 msg = "注销失败!";

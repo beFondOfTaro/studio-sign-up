@@ -1,6 +1,5 @@
 package com.iotstudio.studiosignup.shiro.token;
 
-import com.iotstudio.studiosignup.shiro.StatelessAuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

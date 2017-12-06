@@ -20,13 +20,16 @@ public class SighUpInfo extends BaseEntity {
     @NotNull
     private String personalIntroduction;//个人介绍
 
+    private Integer checkCode;//审核代码,1:待审核，2:未通过
+
     public SighUpInfo() {
     }
 
-    public SighUpInfo(Project project, User user, String personalIntroduction) {
+    public SighUpInfo(Project project, User user, String personalIntroduction, Integer checkCode) {
         this.project = project;
         this.user = user;
         this.personalIntroduction = personalIntroduction;
+        this.checkCode = checkCode;
     }
 
     public Project getProject() {
@@ -53,12 +56,11 @@ public class SighUpInfo extends BaseEntity {
         this.personalIntroduction = personalIntroduction;
     }
 
-    @Override
-    public String toString() {
-        return "SighUpInfo{" +
-                "project=" + project +
-                ", user=" + user +
-                ", personalIntroduction='" + personalIntroduction + '\'' +
-                "} " + super.toString();
+    public Integer getCheckCode() {
+        return checkCode;
+    }
+
+    public void setCheckCode(Integer checkCode) {
+        this.checkCode = checkCode;
     }
 }

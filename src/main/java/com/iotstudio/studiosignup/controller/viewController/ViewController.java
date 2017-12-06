@@ -9,18 +9,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ViewController {
     
-    @GetMapping("/sighupinfotable")
+    @GetMapping("/sighUpInfoTable")
     public String sighUpInfoTable(){
         return "/sighUpInfoTable";
     }
     
-    @GetMapping("/projecttable")
+    @GetMapping("/projectTable")
     public String projectTable(){
         return "/projectTable";
     }
 
-    @GetMapping("/usertable")
+    @GetMapping("/userTable")
     public String userTable(){
         return "/userTable";
     }
+
+//    @GetMapping("/api")
+//    public String api(){
+//        return "swagger-ui";
+//    }
 }
