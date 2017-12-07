@@ -8,5 +8,9 @@ public interface StudentInfoService extends BaseService<StudentInfo> {
 
     ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile);
 
-    ResponseModel updateOne(StudentInfo studentInfo, String userId, MultipartFile photoFile);
+    ResponseModel updateOneByUserId(StudentInfo studentInfo, String userId, MultipartFile photoFile);
+
+    ResponseModel deleteOneByUserId(String UserId);
+
+    ResponseModel findOneByUserId(String userId);
 }

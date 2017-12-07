@@ -36,9 +36,6 @@ public class TokenUtil {
         //进行消息摘要
         String digest = HmacSHA256Utils.digest(password, token.getParams());
         //将token存储到redis并设置过期时间
-        if (redisTemplate==null){
-            logger.info("null");
-        }
         redisTemplate.boundValueOps(token.getUserId()).set(digest, expirationTime, TimeUnit.DAYS);
         logger.info("用户id:" + token.getUserId() + ",消息摘要已创建：" + digest);
         return digest;

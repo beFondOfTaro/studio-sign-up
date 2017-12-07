@@ -1,7 +1,9 @@
 package com.iotstudio.studiosignup.controller.userAccess;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.entity.StudentInfo;
 import com.iotstudio.studiosignup.service.StudentInfoService;
+import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("user/{"+ CookieUtil.clientIdKey + "}")
+@RequestMapping("user")
 public class UserAccessStudentInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAccessStudentInfoController.class);
@@ -34,26 +36,21 @@ public class UserAccessStudentInfoController {
      * @return 信息
      */
     @PutMapping(value = entity )
-    public ResponseModel studentInfoUpdateOne(StudentInfo studentInfo,
+    public ResponseModel studentInfoUpdateOneByUserId(StudentInfo studentInfo,
                                      @RequestParam("file") MultipartFile photoFile,
-                                     @PathVariable(CookieUtil.clientIdKey) String userId){
-        return studentInfoService.updateOne(studentInfo,userId,photoFile);
+                                     @RequestHeader(HttpParamKey.CLIENT_ID) String userId){
+        return studentInfoService.updateOneByUserId(studentInfo,userId,photoFile);
     }
 
     @PostMapping(value = entity)
     public ResponseModel studentInfoAddOne(@Valid StudentInfo studentInfo,
-                                           @PathVariable(CookieUtil.clientIdKey) String userId,
+                                           @RequestHeader(HttpParamKey.CLIENT_ID) String userId,
                                            @RequestParam("file") MultipartFile photoFile,
                                            BindingResult bindingResult){
         if (bindingResult.hasErrors()){
-            List<String> msgList = new ArrayList<>();
-            for (FieldError error : bindingResult.getFieldErrors()){
-                String msg = error.getDefaultMessage();
-                LOGGER.info(msg);
-                msgList.add(msg);
-            }
-            return new ResponseModel(msgList.toString());
+            return BindingResultHandlerUtil.onError(bindingResult);
         }
         return studentInfoService.addOne(studentInfo,userId,photoFile);
     }
+
 }

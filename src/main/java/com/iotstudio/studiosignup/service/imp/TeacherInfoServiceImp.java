@@ -70,4 +70,58 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
                 );
         return new ResponseModel(teacherInfoPageDataModel);
     }
+
+    @Override
+    public ResponseModel addOneByUserId(TeacherInfo teacherInfo, String userId) {
+        String msg;
+        Integer intUserId = Integer.valueOf(userId);
+        //验证学生信息是否已经存在，存在直接返回失败
+        if (teacherInfoRepository.findTeacherInfoByUserId(intUserId) != null){
+            msg = "已存在该学生信息，请不要重复添加";
+            LOGGER.warn(msg);
+            return new ResponseModel(msg);
+        }
+        teacherInfo.setUserId(intUserId);
+        return new ResponseModel(teacherInfoRepository.save(teacherInfo));
+    }
+
+    @Override
+    public ResponseModel updateOneByUserId(TeacherInfo teacherInfo, String userId) {
+        String msg = "提交失败";
+        Integer intUserId = Integer.valueOf(userId);
+        try {
+            if (teacherInfoRepository.findTeacherInfoByUserId(intUserId) != null){
+                msg = "不存在该老师信息!";
+                LOGGER.error(msg);
+                return new ResponseModel(msg);
+            }
+            if (teacherInfoRepository.updateTeacherInfoByUserId(
+                    intUserId,
+                    teacherInfo.getTeacherNumber())
+                    == 1){
+                msg = "提交成功！";
+                LOGGER.info(msg);
+                return new ResponseModel(true,msg);
+            }
+        }catch (Exception e){
+            LOGGER.error(e.getMessage());
+        }
+        return new ResponseModel(msg);
+    }
+
+    @Override
+    public ResponseModel deleteOneByUserId(String userId) {
+        try {
+            teacherInfoRepository.deleteTeacherInfoByUserId(Integer.valueOf(userId));
+        }
+        catch (Exception e){
+            return new ResponseModel(false,ResponseModel.FAILED_MSG,e.getMessage());
+        }
+        return new ResponseModel();
+    }
+
+    @Override
+    public ResponseModel findOneByUserId(String userId) {
+        return new ResponseModel(teacherInfoRepository.findTeacherInfoByUserId(Integer.valueOf(userId)));
+    }
 }

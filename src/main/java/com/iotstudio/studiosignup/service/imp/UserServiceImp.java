@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.service.imp;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
 import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
@@ -127,7 +128,8 @@ public class UserServiceImp implements UserService {
                 Map<String,Object> data = new HashMap<>();
                 data.put("digest",digest);
                 data.put("userDto",User2UserDtoConverter.convert(user));
-                CookieUtil.addCookie(response,CookieUtil.clientDigestKey,digest);
+                CookieUtil.addCookie(response, HttpParamKey.CLIENT_ID, user.getId().toString());
+                CookieUtil.addCookie(response, HttpParamKey.CLIENT_DIGEST,digest);
                 responseModel = new ResponseModel(true,msg,data);
             }else {
                 msg = "用户名或密码错误！";

@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.shiro.token;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.authc.AuthenticationToken;
 
@@ -21,7 +22,7 @@ public class StatelessAuthenticationToken implements AuthenticationToken {
     private String clientDigest;//凭证即客户端传入的消息摘要。
 
     public StatelessAuthenticationToken() {
-        params.put(CookieUtil.currentTimeKey, String.valueOf(new Date().getTime()));//当前时间
+        params.put(HttpParamKey.CURRENT_TIME, String.valueOf(new Date().getTime()));//当前时间
     }
     public StatelessAuthenticationToken(String userId, Map<String, String> params, String clientDigest) {
         super();

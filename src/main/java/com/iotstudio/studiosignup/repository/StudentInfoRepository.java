@@ -21,4 +21,6 @@ public interface StudentInfoRepository extends JpaRepository<StudentInfo,Integer
             "s.photo = ?5 " +
             "where s.userId = ?1")
     Integer updateByUserId(Integer userId,String major, String studentNumber, String qqNumber, String photo);
+
+    void deleteByUserId(Integer userId);
 }

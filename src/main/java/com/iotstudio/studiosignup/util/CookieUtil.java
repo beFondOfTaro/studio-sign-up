@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CookieUtil {
-    public static final String clientDigestKey = "digest";
-    public static final String clientIdKey = "client_id";
-    public static final String currentTimeKey = "currentTime";
 
     /**
      * 设置cookie

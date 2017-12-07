@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.controller;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.entity.Project;
 import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.ProjectService;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "admin/{admin_id}")
+@RequestMapping(value = "admin")
 public class ProjectController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectController.class);
@@ -42,7 +43,7 @@ public class ProjectController {
     }
 
     @PostMapping(value = entity)
-    public ResponseModel projectAddOne(Project project,@PathVariable("admin_id")Integer adminId){
+    public ResponseModel projectAddOne(Project project,@RequestHeader(HttpParamKey.CLIENT_ID)Integer adminId){
         User user = new User();
         user.setId(adminId);
         project.setUser(user);

@@ -3,6 +3,7 @@ package com.iotstudio.studiosignup.service.imp;
 import com.iotstudio.studiosignup.config.StudentInfoConfig;
 import com.iotstudio.studiosignup.entity.StudentInfo;
 import com.iotstudio.studiosignup.repository.StudentInfoRepository;
+import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.StudentInfoService;
 import com.iotstudio.studiosignup.util.fileutil.FileResponseData;
 import com.iotstudio.studiosignup.util.fileutil.FileUtil;
@@ -33,6 +34,8 @@ public class StudentInfoServiceImp implements StudentInfoService {
     @Autowired
     private StudentInfoRepository studentInfoRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private StudentInfoConfig studentInfoConfig;
 
     @Override
@@ -43,6 +46,7 @@ public class StudentInfoServiceImp implements StudentInfoService {
     @Override
     public ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile) {
         String msg;
+        Object data;
         Integer intUserId = Integer.valueOf(userId);//用户id转为整型
         String photoAbsoluteSavePath = studentInfoConfig.getPhotoAbsoluteSavePath(userId);//照片的存储路径
         //验证学生信息是否已经存在，存在直接返回失败
@@ -58,10 +62,10 @@ public class StudentInfoServiceImp implements StudentInfoService {
             try {
                 studentInfo.setUserId(intUserId);
                 studentInfo.setPhoto(fileInfo.getFile().getName());
-                studentInfoRepository.save(studentInfo);
+                data = studentInfoRepository.save(studentInfo);
                 msg = "提交成功";
                 LOGGER.error(msg);
-                return new ResponseModel(msg,studentInfo);
+                return new ResponseModel(msg,data);
             }catch (Exception e){
                 LOGGER.error(e.getMessage());
                 msg = "提交信息失败";
@@ -86,12 +90,23 @@ public class StudentInfoServiceImp implements StudentInfoService {
     }
 
     @Override
+    public ResponseModel deleteOneByUserId(String userId) {
+        try {
+            studentInfoRepository.deleteByUserId(Integer.valueOf(userId));
+        }
+        catch (Exception e){
+            return new ResponseModel(false,ResponseModel.FAILED_MSG,e.getMessage());
+        }
+        return new ResponseModel();
+    }
+
+    @Override
     public ResponseModel updateOne(StudentInfo studentInfo) {
         return new ResponseModel(studentInfoRepository.save(studentInfo));
     }
 
     @Override
-    public ResponseModel updateOne(StudentInfo studentInfo, String userId, MultipartFile photoFile) {
+    public ResponseModel updateOneByUserId(StudentInfo studentInfo, String userId, MultipartFile photoFile) {
         String msg;//返回的消息
         StudentInfo originStudentInfo;
         File originPhoto = null;//原来的照片
@@ -119,7 +134,7 @@ public class StudentInfoServiceImp implements StudentInfoService {
                     //删除原来照片
                     LOGGER.info("删除原来的照片");
                     FileUtil.deleteFile(originPhoto);
-                    msg = "上传成功！";
+                    msg = "提交成功！";
                     LOGGER.info(msg);
                     return new ResponseModel(true,msg);
                 }
@@ -129,7 +144,7 @@ public class StudentInfoServiceImp implements StudentInfoService {
                 FileUtil.deleteFile(originPhoto);
             }
         }
-        msg = "上传失败";
+        msg = "提交失败";
         LOGGER.error(msg);
         return new ResponseModel(msg);
     }
@@ -137,6 +152,11 @@ public class StudentInfoServiceImp implements StudentInfoService {
     @Override
     public ResponseModel selectOneById(Integer id) {
         return new ResponseModel(studentInfoRepository.findOne(id));
+    }
+
+    @Override
+    public ResponseModel findOneByUserId(String userId) {
+        return new ResponseModel(studentInfoRepository.findByUserId(Integer.valueOf(userId)));
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "admin/{admin_id}")
+@RequestMapping(value = "admin")
 public class SighUpInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SighUpInfoController.class);

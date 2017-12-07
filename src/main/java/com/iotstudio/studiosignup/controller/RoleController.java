@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.controller;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.RoleService;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "admin/{admin_id}")
+@RequestMapping(value = "admin")
 public class RoleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);

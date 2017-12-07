@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.shiro.Filter;
 
+import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -29,19 +30,21 @@ public class StatelessAccessControllerFilter extends AccessControlFilter {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
             //1、客户端生成的消息摘要
-            String clientDigest = CookieUtil.getCookieValueByName(httpServletRequest, CookieUtil.clientDigestKey);
+            String clientDigest = httpServletRequest.getHeader(HttpParamKey.CLIENT_DIGEST);
             //2、客户端传入的用户身份
-            String clientId = CookieUtil.getCookieValueByName(httpServletRequest, CookieUtil.clientIdKey);
-            //3、添加用于生成消息摘要的参数列表
+            String clientId = httpServletRequest.getHeader(HttpParamKey.CLIENT_ID);
+            //3、添加用于生成消息摘要的参数列表(这里不加了)
             //4、生成无状态Token
             StatelessAuthenticationToken token = new StatelessAuthenticationToken(clientId, clientDigest);
             //5、委托给Realm进行登录
             getSubject(servletRequest, servletResponse).login(token);
-            //登录成功后设置cookie保存登录状态
-            CookieUtil.addCookie(httpServletResponse,CookieUtil.clientIdKey, clientId);
-            CookieUtil.addCookie(httpServletResponse,CookieUtil.clientDigestKey,clientDigest);
+            //登录成功后设置header保存登录状态
+            httpServletResponse.setHeader(HttpParamKey.CLIENT_ID, clientId);
+            httpServletResponse.setHeader(HttpParamKey.CLIENT_DIGEST, clientDigest);
+            CookieUtil.addCookie(httpServletResponse,HttpParamKey.CLIENT_ID, clientId);
+            CookieUtil.addCookie(httpServletResponse,HttpParamKey.CLIENT_DIGEST,clientDigest);
         } catch (NullPointerException e) {
-            LOGGER.error("已拦截请求！"+ CookieUtil.clientIdKey + "或" + CookieUtil.clientDigestKey+ "不能为空！");
+            LOGGER.error("已拦截请求！"+ HttpParamKey.CLIENT_ID + "或" + HttpParamKey.CLIENT_DIGEST+ "不能为空！");
             return false;
         } catch (Exception e) {
             e.printStackTrace();
