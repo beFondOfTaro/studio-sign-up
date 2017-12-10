@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface UserService extends BaseService<User> {
 
     ResponseModel addOne(User user, String roleName);
-    ResponseModel updateOne(User user,String roleName);
     ResponseModel login(HttpServletResponse response,String username, String password);
     ResponseModel logout(String userId);
+    ResponseModel selectOneById(Integer id);
 }

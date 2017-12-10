@@ -2,16 +2,29 @@ package com.iotstudio.studiosignup.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
-    private Role role;
+    /*
+        name属性：用于指定中间表数据表的表名（eg. name="category_item"指定中间表的表名为category_item）
+    joinColumns属性：该注解用于指定映射主体类与中间表的映射关系。
+    从javadoc中可以看到该属性的类型是JoinColumn[]，也就是说是一个@JoinColumn注解的集合。
+    其中，@JoinColumn注解的name属性用于指定中间表的一个外键列的列名，
+    该外键列参考映射主体类对应数据表的的主键列（如果该主键列的列名不是ID的时候，
+    需要用referencedColumnName属性指定主键列的列名。如Category中的主键为“ID_ID”）；
+    inverseJoinColumns属性：该注解用于指定对方（非映射主体类）实体类与中间表的映射关系。
+    它也是一个JoinColumn[]类型。该属性的用法与joinColumns是一致的。
+     */
+    @NotNull
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+    @JoinTable(name = "user_role",
+        joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")})
+    private List<Role> roleList;
 
     @NotNull
-    @Column(unique = true)
     private String username;//用户名
 
     @NotNull
@@ -26,20 +39,20 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    public User(Role role, String username, String password, String realName, String phone) {
-        this.role = role;
+    public User(List<Role> roleList, String username, String password, String realName, String phone) {
+        this.roleList = roleList;
         this.username = username;
         this.password = password;
         this.realName = realName;
         this.phone = phone;
     }
 
-    public Role getRole() {
-        return role;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public String getUsername() {
@@ -77,7 +90,7 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                "role=" + role +
+                "roleList=" + roleList +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", realName='" + realName + '\'' +

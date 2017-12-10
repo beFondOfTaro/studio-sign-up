@@ -1,13 +1,13 @@
 package com.iotstudio.studiosignup.enums;
 
-public enum SighUpInfoCheckCode {
+public enum SighUpInfoCheckCodeEnum {
     UNCHECKED(1),
     PASSED(2),
     FAILED(3);
 
     private Integer value;
 
-    SighUpInfoCheckCode(Integer value) {
+    SighUpInfoCheckCodeEnum(Integer value) {
         this.value = value;
     }
 

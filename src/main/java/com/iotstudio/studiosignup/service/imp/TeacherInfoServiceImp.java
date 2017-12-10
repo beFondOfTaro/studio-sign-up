@@ -1,10 +1,16 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.entity.TeacherInfo;
+import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.repository.TeacherInfoRepository;
+import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.TeacherInfoService;
+import com.iotstudio.studiosignup.util.HttpResponseUtil;
+import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +18,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional
@@ -24,6 +31,8 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
 
     @Autowired
     private TeacherInfoRepository teacherInfoRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public ResponseModel addOne(TeacherInfo teacherInfo) {
@@ -72,7 +81,7 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
     }
 
     @Override
-    public ResponseModel addOneByUserId(TeacherInfo teacherInfo, String userId) {
+    public ResponseModel addTeacherInfoByUserId(TeacherInfo teacherInfo, String userId) {
         String msg;
         Integer intUserId = Integer.valueOf(userId);
         //验证学生信息是否已经存在，存在直接返回失败
@@ -86,7 +95,7 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
     }
 
     @Override
-    public ResponseModel updateOneByUserId(TeacherInfo teacherInfo, String userId) {
+    public ResponseModel updateOneByUserIdAndTeacherId(TeacherInfo teacherInfo, String userId) {
         String msg = "提交失败";
         Integer intUserId = Integer.valueOf(userId);
         try {
@@ -95,8 +104,9 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
                 LOGGER.error(msg);
                 return new ResponseModel(msg);
             }
-            if (teacherInfoRepository.updateTeacherInfoByUserId(
+            if (teacherInfoRepository.updateTeacherInfoByUserIdAndId(
                     intUserId,
+                    teacherInfo.getId(),
                     teacherInfo.getTeacherNumber())
                     == 1){
                 msg = "提交成功！";
@@ -110,7 +120,7 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
     }
 
     @Override
-    public ResponseModel deleteOneByUserId(String userId) {
+    public ResponseModel deleteOneByUserId(String userId,String teacherId) {
         try {
             teacherInfoRepository.deleteTeacherInfoByUserId(Integer.valueOf(userId));
         }
@@ -121,7 +131,10 @@ public class TeacherInfoServiceImp implements TeacherInfoService {
     }
 
     @Override
-    public ResponseModel findOneByUserId(String userId) {
-        return new ResponseModel(teacherInfoRepository.findTeacherInfoByUserId(Integer.valueOf(userId)));
+    public ResponseModel findTeacherInfoListByUserId(String userId) {
+        Integer intUserId = Integer.valueOf(userId);
+        return new ResponseModel(teacherInfoRepository.findTeacherInfoByUserId(intUserId));
     }
+
+
 }

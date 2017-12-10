@@ -1,17 +1,20 @@
 package com.iotstudio.studiosignup.controller;
 
-import com.iotstudio.studiosignup.constant.HttpParamKey;
+import com.iotstudio.studiosignup.constant.PermissionActionConstant;
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.entity.Role;
-import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.RoleService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping(value = "admin")
+@RequestMapping(value = RoleNameConstant.USER)
 public class RoleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
@@ -19,7 +22,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    private final String entity = "role";
+    public static final String entity = "role";
 
 //    @GetMapping(value = entity)
 //    public ResponseModel roleList(){
@@ -31,29 +34,34 @@ public class RoleController {
      * @param page 页码
      * @param size 每一页的数量
      */
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = entity)
     public ResponseModel roleListByPage(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                         @RequestParam(value = "size",defaultValue = "10") Integer size){
         return roleService.selectAllByPage(page-1,size);
     }
 
-    @GetMapping(value = entity+"/{id}")
-    public ResponseModel roleFindOneById(@PathVariable("id") Integer id){
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = entity+"/{roleId}")
+    public ResponseModel roleFindOneById(@PathVariable("roleId") Integer id){
         return roleService.selectOneById(id);
     }
 
+    @RequiresPermissions(entity + PermissionActionConstant.ADD)
     @PostMapping(value = entity)
     public ResponseModel roleAddOne(Role role){
         return roleService.addOne(role);
     }
 
-    @PutMapping(value = entity)
-    public ResponseModel roleUpdateOne(Role role){
+    @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
+    @PutMapping(value = entity )
+    public ResponseModel roleUpdateOne(@Valid Role role){
         return roleService.updateOne(role);
     }
 
-    @DeleteMapping(value = entity+"/{id}")
-    public ResponseModel roleDeleteOne(@PathVariable("id") Integer id){
+    @RequiresPermissions(entity + PermissionActionConstant.DELETE)
+    @DeleteMapping(value = entity+"/{roleId}")
+    public ResponseModel roleDeleteOne(@PathVariable("roleId") Integer id){
         return roleService.deleteOneById(id);
     }
 

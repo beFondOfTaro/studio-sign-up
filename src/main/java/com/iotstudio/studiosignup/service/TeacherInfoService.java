@@ -3,12 +3,14 @@ package com.iotstudio.studiosignup.service;
 import com.iotstudio.studiosignup.entity.TeacherInfo;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface TeacherInfoService extends BaseService<TeacherInfo> {
-    ResponseModel addOneByUserId(TeacherInfo teacherInfo, String userId);
+    ResponseModel addTeacherInfoByUserId(TeacherInfo teacherInfo, String userId);
 
-    ResponseModel updateOneByUserId(TeacherInfo teacherInfo, String userId);
+    ResponseModel updateOneByUserIdAndTeacherId(TeacherInfo teacherInfo, String userId);
 
-    ResponseModel deleteOneByUserId(String userId);
+    ResponseModel deleteOneByUserId(String userId,String teacherId);
 
-    ResponseModel findOneByUserId(String userId);
+    ResponseModel findTeacherInfoListByUserId(String userId);
 }

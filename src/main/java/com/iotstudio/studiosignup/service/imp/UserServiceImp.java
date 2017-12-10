@@ -1,6 +1,7 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.constant.HttpParamKey;
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
 import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
@@ -11,8 +12,12 @@ import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
 import com.iotstudio.studiosignup.util.CookieUtil;
+import com.iotstudio.studiosignup.util.HttpResponseUtil;
+import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -67,15 +74,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ResponseModel updateOne(User user,String roleName) {
-        Role role = roleRepository.findRoleByName(roleName);
-        user.setRole(role);
-        return new ResponseModel(userRepository.save(user));
-    }
-
-    @Override
     public ResponseModel selectOneById(Integer id) {
-        return new ResponseModel(userRepository.findOne(id));
+        User targetUser = userRepository.findOne(id);//查询对象
+        return new ResponseModel(User2UserDtoConverter.convert(targetUser));
     }
 
     @Override
@@ -108,7 +109,9 @@ public class UserServiceImp implements UserService {
             return new ResponseModel(false,msg,null);
         }
         Role role = roleRepository.findRoleByName(roleName);
-        user.setRole(role);
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
+        user.setRoleList(roleList);
         return new ResponseModel(userRepository.save(user));
     }
 

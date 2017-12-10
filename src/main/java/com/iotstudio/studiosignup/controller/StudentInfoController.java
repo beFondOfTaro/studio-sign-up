@@ -1,11 +1,15 @@
 package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.constant.HttpParamKey;
+import com.iotstudio.studiosignup.constant.PermissionActionConstant;
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.entity.StudentInfo;
 import com.iotstudio.studiosignup.service.StudentInfoService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
 import com.iotstudio.studiosignup.util.CookieUtil;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +17,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "admin")
+@RequestMapping(value = RoleNameConstant.USER)
 public class StudentInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentInfoController.class);
@@ -24,7 +29,7 @@ public class StudentInfoController {
     @Autowired
     private StudentInfoService studentInfoService;
 
-    private final String entity = "studentInfo";
+    public static final String entity = "studentInfo";
 
     /**
      * 分页查询所有学生信息
@@ -37,6 +42,7 @@ public class StudentInfoController {
 //            @ApiImplicitParam(dataType = "Integer", name = "page", value = "页码"),
 //            @ApiImplicitParam(dataType = "Integer", name = "size", value = "每一页的数量")
 //    })
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = entity)
     public ResponseModel studentInfoListByPage(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                                @RequestParam(value = "size", defaultValue = "10") Integer size){
@@ -44,13 +50,15 @@ public class StudentInfoController {
     }
 
     /**
-     * 根据学生id删除一个学生信息
+     * 根据学生id查询一个学生信息
      * @param userId 学生id
      * @return 一个学生信息
      */
-    @GetMapping(value = entity+"/{userId}")
-    public ResponseModel studentInfoFindOneById(@PathVariable("userId") String userId){
-        return studentInfoService.findOneByUserId(userId);
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = UserController.entity + "/{userId}/" + entity)
+    public ResponseModel studentInfoFindOneById(@PathVariable("userId") String userId,
+                                                HttpServletResponse response){
+        return studentInfoService.findOneByUserId(userId,response);
     }
 
     /**
@@ -60,15 +68,17 @@ public class StudentInfoController {
      * @param photoFile 照片文件
      * @return 新增的学生信息
      */
-    @PostMapping(value = entity)
+    @RequiresPermissions(entity + PermissionActionConstant.ADD)
+    @PostMapping(value = UserController.entity + "/{userId}/" + entity)
     public ResponseModel studentInfoAddOne(@Valid StudentInfo studentInfo,
                                            @RequestHeader(HttpParamKey.CLIENT_ID) String userId,
                                            @RequestParam("file") MultipartFile photoFile,
+                                           HttpServletResponse response,
                                            BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return BindingResultHandlerUtil.onError(bindingResult);
         }
-        return studentInfoService.addOne(studentInfo,userId,photoFile);
+        return studentInfoService.addOne(studentInfo,userId,photoFile,response);
     }
 
     /**
@@ -78,7 +88,8 @@ public class StudentInfoController {
      * @param userId 用户id
      * @return 信息
      */
-    @PutMapping(value = entity + "/{userId}")
+    @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
+    @PutMapping(value = UserController.entity + "/{userId}/" + entity)
     public ResponseModel studentInfoUpdateOneByUserId(StudentInfo studentInfo,
                                                       @RequestParam("file") MultipartFile photoFile,
                                                       @RequestParam("userId") String userId){
@@ -90,7 +101,8 @@ public class StudentInfoController {
      * @param userId 学生id
      * @return 一个学生信息
      */
-    @DeleteMapping(value = entity + "/{userId}")
+    @RequiresPermissions(entity + PermissionActionConstant.DELETE)
+    @DeleteMapping(value = UserController.entity + "/{userId}/" + entity + "/{userId}")
     public ResponseModel deleteOneByUserId(@RequestParam("userId") String userId){
         return studentInfoService.deleteOneByUserId(userId);
     }

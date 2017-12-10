@@ -11,6 +11,6 @@ public interface TeacherInfoRepository extends JpaRepository<TeacherInfo,Integer
     void deleteTeacherInfoByUserId(Integer userId);
 
     @Modifying
-    @Query("update TeacherInfo as t set t.teacherNumber = ?2 where t.userId = ?1")
-    Integer updateTeacherInfoByUserId(Integer userId, String teacherNumber);
+    @Query("update TeacherInfo as t set t.teacherNumber = ?3 where t.userId = ?1 and t.id = ?2")
+    Integer updateTeacherInfoByUserIdAndId(Integer userId,Integer id, String teacherNumber);
 }

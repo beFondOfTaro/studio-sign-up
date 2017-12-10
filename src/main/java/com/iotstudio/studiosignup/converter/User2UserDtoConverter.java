@@ -10,8 +10,8 @@ public class User2UserDtoConverter {
         userDto.setId(user.getId());
         userDto.setPhone(user.getPhone());
         userDto.setRealName(user.getRealName());
-        userDto.setRole(user.getRole());
         userDto.setUsername(user.getUsername());
+        userDto.setRoleList(user.getRoleList());
         return userDto;
     }
 }

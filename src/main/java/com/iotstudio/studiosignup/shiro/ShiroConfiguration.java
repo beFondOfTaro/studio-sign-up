@@ -33,10 +33,7 @@ public class ShiroConfiguration {
         factoryBean.getFilters().put(statelessAccessControllerFilter,accessControllerFilter());
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
         //公共访问的url
-        filterChainDefinitionMap.put("/login","anon");
-        filterChainDefinitionMap.put("swagger-ui.html","anon");
-
-        filterChainDefinitionMap.put("/admin/**", statelessAccessControllerFilter);
+        filterChainDefinitionMap.put("/pub/**","anon");
         filterChainDefinitionMap.put("/user/**",statelessAccessControllerFilter);
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;
@@ -89,6 +86,7 @@ public class ShiroConfiguration {
     public StatelessAccessControllerFilter accessControllerFilter() {
         return new StatelessAccessControllerFilter();
     }
+
 
     @Bean
     public StatelessAuthorizingRealm statelessAuthorizingRealm(){

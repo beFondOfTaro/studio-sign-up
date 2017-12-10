@@ -5,6 +5,8 @@ import com.iotstudio.studiosignup.entity.StudentInfo;
 import com.iotstudio.studiosignup.repository.StudentInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.StudentInfoService;
+import com.iotstudio.studiosignup.util.HttpResponseUtil;
+import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.fileutil.FileResponseData;
 import com.iotstudio.studiosignup.util.fileutil.FileUtil;
 import com.iotstudio.studiosignup.util.fileutil.WrittenFileInfo;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 
 @Service
@@ -44,11 +47,14 @@ public class StudentInfoServiceImp implements StudentInfoService {
     }
 
     @Override
-    public ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile) {
+    public ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile,HttpServletResponse response) {
         String msg;
         Object data;
         Integer intUserId = Integer.valueOf(userId);//用户id转为整型
         String photoAbsoluteSavePath = studentInfoConfig.getPhotoAbsoluteSavePath(userId);//照片的存储路径
+        if (!ValidatorUtil.validateUpdateByRole(userRepository.findOne(Integer.valueOf(userId)))){
+            return HttpResponseUtil.noAuthority(response);
+        }
         //验证学生信息是否已经存在，存在直接返回失败
         if (studentInfoRepository.findByUserId(intUserId) != null){
             msg = "已存在该学生信息，请不要重复添加";
@@ -155,7 +161,10 @@ public class StudentInfoServiceImp implements StudentInfoService {
     }
 
     @Override
-    public ResponseModel findOneByUserId(String userId) {
+    public ResponseModel findOneByUserId(String userId, HttpServletResponse response) {
+        if (!ValidatorUtil.ValidateQueryByRole(userRepository.findOne(Integer.valueOf(userId)))){
+            return HttpResponseUtil.noAuthority(response);
+        }
         return new ResponseModel(studentInfoRepository.findByUserId(Integer.valueOf(userId)));
     }
 

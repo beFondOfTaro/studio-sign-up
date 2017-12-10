@@ -1,10 +1,14 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.entity.Permission;
+import com.iotstudio.studiosignup.entity.Role;
 import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.repository.PermissionRepository;
 import com.iotstudio.studiosignup.repository.RoleRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,6 +19,10 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
+
+import java.util.List;
+import java.util.Map;
 
 public class StatelessAuthorizingRealm extends AuthorizingRealm {
 
@@ -56,9 +64,14 @@ public class StatelessAuthorizingRealm extends AuthorizingRealm {
         //根据用户名查找角色，请根据需求实现
         String userId = (String) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        //查询user的角色并添加
+        //查询user的角色并添加权限
         User user = userRepository.findOne(Integer.valueOf(userId));
-        authorizationInfo.addRole(user.getRole().getName());
+        for (Role role : user.getRoleList()){
+            authorizationInfo.addRole(role.getName());
+            for (Permission permission : role.getPermissionList()){
+                authorizationInfo.addStringPermission(permission.getName());
+            }
+        }
         return  authorizationInfo;
     }
 

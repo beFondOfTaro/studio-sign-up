@@ -7,6 +7,8 @@ import com.iotstudio.studiosignup.repository.ProjectRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
+import com.iotstudio.studiosignup.util.HttpResponseUtil;
+import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional
@@ -111,5 +115,14 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     @Override
     public ResponseModel updateOne(SighUpInfo sighUpInfo, String username, String projectName) {
         return addOne(sighUpInfo,username,projectName);
+    }
+
+    @Override
+    public ResponseModel selectSighUpInfoByUserIdAndProjectId(Integer userId, Integer projectId, HttpServletResponse response) {
+        User user = new User();
+        user.setId(userId);
+        Project project = new Project();
+        project.setId(projectId);
+        return new ResponseModel(sighUpInfoRepository.findSighUpInfoByUserAndProject(user,project));
     }
 }

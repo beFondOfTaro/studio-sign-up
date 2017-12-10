@@ -1,15 +1,22 @@
 package com.iotstudio.studiosignup.controller;
 
+import com.iotstudio.studiosignup.constant.PermissionActionConstant;
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
+import com.iotstudio.studiosignup.entity.Project;
 import com.iotstudio.studiosignup.entity.SighUpInfo;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
-@RequestMapping(value = "admin")
+@RequestMapping(value = RoleNameConstant.USER)
 public class SighUpInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SighUpInfoController.class);
@@ -17,7 +24,7 @@ public class SighUpInfoController {
     @Autowired
     private SighUpInfoService sighUpInfoService;
 
-    private final String entity = "sighUpInfo";
+    public static final String entity = "sighUpInfo";
 
 //    @GetMapping(value = entity)
 //    public ResponseModel sighUpInfoList(){
@@ -29,31 +36,48 @@ public class SighUpInfoController {
      * @param page 页码
      * @param size 每一页的数量
      */
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = entity)
     public ResponseModel sighUpInfoListByPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size){
         return sighUpInfoService.selectAllByPage(page-1,size);
     }
 
-    @GetMapping(value = entity+"/{id}")
-    public ResponseModel sighUpInfoFindOneById(@PathVariable("id") Integer id){
-        return sighUpInfoService.selectOneById(id);
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = UserController.entity + "/{userId}/" + entity+"/{sighUpInfoId}")
+    public ResponseModel sighUpInfoFindOneByUserId(@PathVariable("userId") Integer userId,
+                                               @PathVariable("sighUpInfoId") Integer sighUpInfoId,
+                                               HttpServletResponse response){
+        return sighUpInfoService.selectSighUpInfoByUserIdAndProjectId(userId,sighUpInfoId,response);
     }
 
-    @PostMapping(value = entity)
+    /**
+     * 查询某一个项目下的所有报名信息
+     * @return 某一个项目下的所有报名信息
+     */
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = ProjectController.entity + "/{projectId}/" + entity)
+    public ResponseModel findSighUpInfoByProjectId(@PathVariable("userId") Integer projectId){
+        return null;
+    }
+
+    @RequiresPermissions(entity + PermissionActionConstant.ADD)
+    @PostMapping(value = UserController.entity + "/{userId}/" + entity)
     public ResponseModel sighUpInfoAddOne(SighUpInfo sighUpInfo,
                                           @RequestParam("username")String username,
                                           @RequestParam("projectName")String projectName){
         return sighUpInfoService.addOne(sighUpInfo,username,projectName);
     }
 
-    @PutMapping(value = entity)
+    @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
+    @PutMapping(value = UserController.entity + "/{userId}/" + entity)
     public ResponseModel sighUpInfoUpdateOne(SighUpInfo sighUpInfo,
                                              @RequestParam("username")String username,
                                              @RequestParam("projectName")String projectName){
         return sighUpInfoService.updateOne(sighUpInfo,username,projectName);
     }
 
-    @DeleteMapping(value = entity+"/{id}")
+    @RequiresPermissions(entity + PermissionActionConstant.DELETE)
+    @DeleteMapping(value = UserController.entity + "/{userId}/" + entity+"/{sighUpInfoId}")
     public ResponseModel sighUpInfoDeleteOne(@PathVariable("id") Integer id){
         return sighUpInfoService.deleteOneById(id);
     }
