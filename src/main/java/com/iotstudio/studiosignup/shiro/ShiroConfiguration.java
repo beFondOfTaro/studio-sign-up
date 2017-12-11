@@ -1,5 +1,6 @@
 package com.iotstudio.studiosignup.shiro;
 
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.shiro.Filter.StatelessAccessControllerFilter;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -34,7 +35,7 @@ public class ShiroConfiguration {
         Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
         //公共访问的url
         filterChainDefinitionMap.put("/pub/**","anon");
-        filterChainDefinitionMap.put("/user/**",statelessAccessControllerFilter);
+        filterChainDefinitionMap.put("/"+ RoleNameConstant.API_VERSION+"/**",statelessAccessControllerFilter);
         factoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return factoryBean;
     }

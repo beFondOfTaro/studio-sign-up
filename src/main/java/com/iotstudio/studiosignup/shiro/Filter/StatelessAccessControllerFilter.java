@@ -3,15 +3,19 @@ package com.iotstudio.studiosignup.shiro.Filter;
 import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.util.CookieUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StatelessAccessControllerFilter extends AccessControlFilter {
 
@@ -30,20 +34,24 @@ public class StatelessAccessControllerFilter extends AccessControlFilter {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
             //1、客户端生成的消息摘要
-            String clientDigest = httpServletRequest.getHeader(HttpParamKey.CLIENT_DIGEST);
+            String clientDigest = httpServletRequest.getParameter(HttpParamKey.CLIENT_DIGEST);
             //2、客户端传入的用户身份
-            String clientId = httpServletRequest.getHeader(HttpParamKey.CLIENT_ID);
-            //3、添加用于生成消息摘要的参数列表(这里不加了)
+            String clientId = httpServletRequest.getParameter(HttpParamKey.CLIENT_ID);
+            LOGGER.info(clientId + clientDigest);
+            //3、添加用于生成消息摘要的参数列表,添加一个用户私有资源授权的参数
+            Map<String,String> params = new HashMap<>();
+            params.put("isOwner",Boolean.toString(isOwner(httpServletRequest,clientId)));
             //4、生成无状态Token
-            StatelessAuthenticationToken token = new StatelessAuthenticationToken(clientId, clientDigest);
+            StatelessAuthenticationToken token = new StatelessAuthenticationToken(clientId,params,clientDigest);
             //5、委托给Realm进行登录
             getSubject(servletRequest, servletResponse).login(token);
             //登录成功后设置header保存登录状态
-            httpServletResponse.setHeader(HttpParamKey.CLIENT_ID, clientId);
-            httpServletResponse.setHeader(HttpParamKey.CLIENT_DIGEST, clientDigest);
             CookieUtil.addCookie(httpServletResponse,HttpParamKey.CLIENT_ID, clientId);
             CookieUtil.addCookie(httpServletResponse,HttpParamKey.CLIENT_DIGEST,clientDigest);
+            //跨域设置(调试用)
+            httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         } catch (NullPointerException e) {
+            e.printStackTrace();
             LOGGER.error("已拦截请求！"+ HttpParamKey.CLIENT_ID + "或" + HttpParamKey.CLIENT_DIGEST+ "不能为空！");
             return false;
         } catch (Exception e) {
@@ -71,4 +79,13 @@ public class StatelessAccessControllerFilter extends AccessControlFilter {
         httpServletResponse.getWriter().write("login error");
     }
 
+    private boolean isOwner(HttpServletRequest servletRequest,String clientId){
+        Map pathVariableMap = (Map)servletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);//pathvariable参数列表
+        if (pathVariableMap==null){
+            return false;
+        }else {
+            String targetUserId = (String) pathVariableMap.get("userId");
+            return targetUserId.equals(clientId);
+        }
+    }
 }

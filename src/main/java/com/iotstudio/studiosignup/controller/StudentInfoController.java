@@ -6,10 +6,8 @@ import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.entity.StudentInfo;
 import com.iotstudio.studiosignup.service.StudentInfoService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
-import com.iotstudio.studiosignup.util.CookieUtil;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = RoleNameConstant.USER)
+@RequestMapping(value = RoleNameConstant.API_VERSION)
 public class StudentInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentInfoController.class);

@@ -59,11 +59,6 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     }
 
     @Override
-    public ResponseModel updateOne(SighUpInfo sighUpInfo, Integer userId, String projectName) {
-        return addOne(sighUpInfo,userId,projectName);
-    }
-
-    @Override
     public ResponseModel selectOneById(Integer id) {
         return new ResponseModel(sighUpInfoRepository.findOne(id));
     }
@@ -113,8 +108,24 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     }
 
     @Override
-    public ResponseModel updateOne(SighUpInfo sighUpInfo, String username, String projectName) {
-        return addOne(sighUpInfo,username,projectName);
+    public ResponseModel updateOne(SighUpInfo sighUpInfo,Integer userId,Integer projectId,Integer sighUpInfoId) {
+        User user = new User();
+        Project project = new Project();
+        user.setId(userId);
+        project.setId(projectId);
+        sighUpInfo.setUser(user);
+        sighUpInfo.setProject(project);
+        sighUpInfo.setId(sighUpInfoId);
+        return new ResponseModel(sighUpInfoRepository.save(sighUpInfo));
+    }
+
+    public ResponseModel updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(
+            Integer checkCode, Integer userId, Integer projectId,Integer sighUpInfoId
+    ){
+        if (sighUpInfoRepository.updateByUserIdAndProjectId(checkCode,userId,projectId,sighUpInfoId) == 1){
+            return new ResponseModel();
+        }
+        return new ResponseModel("更新审核状态失败！");
     }
 
     @Override
@@ -124,5 +135,12 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
         Project project = new Project();
         project.setId(projectId);
         return new ResponseModel(sighUpInfoRepository.findSighUpInfoByUserAndProject(user,project));
+    }
+
+    @Override
+    public ResponseModel findSighUpInfoByProjectId(Integer projectId) {
+        Project project = new Project();
+        project.setId(projectId);
+        return new ResponseModel(sighUpInfoRepository.findSighUpInfoByProject(project));
     }
 }

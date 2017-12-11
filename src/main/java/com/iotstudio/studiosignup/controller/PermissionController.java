@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = RoleNameConstant.USER)
+@RequestMapping(value = RoleNameConstant.API_VERSION)
 public class PermissionController {
     @Autowired
     private PermissionService permissionService;

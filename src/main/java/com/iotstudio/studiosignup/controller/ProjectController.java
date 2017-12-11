@@ -8,14 +8,13 @@ import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.ProjectService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = RoleNameConstant.USER)
+@RequestMapping(value = RoleNameConstant.API_VERSION)
 public class ProjectController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProjectController.class);

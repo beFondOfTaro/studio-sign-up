@@ -6,6 +6,7 @@ import com.iotstudio.studiosignup.entity.Project;
 import com.iotstudio.studiosignup.entity.SighUpInfo;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping(value = RoleNameConstant.USER)
 public class SighUpInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SighUpInfoController.class);
@@ -57,7 +57,7 @@ public class SighUpInfoController {
     @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = ProjectController.entity + "/{projectId}/" + entity)
     public ResponseModel findSighUpInfoByProjectId(@PathVariable("userId") Integer projectId){
-        return null;
+        return sighUpInfoService.findSighUpInfoByProjectId(projectId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.ADD)
@@ -69,11 +69,21 @@ public class SighUpInfoController {
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
-    @PutMapping(value = UserController.entity + "/{userId}/" + entity)
+    @PutMapping(value = UserController.entity + "/{userId}/" + ProjectController.entity + "{/projectId}/" + entity + "/{sighUpInfoId}")
     public ResponseModel sighUpInfoUpdateOne(SighUpInfo sighUpInfo,
-                                             @RequestParam("username")String username,
-                                             @RequestParam("projectName")String projectName){
-        return sighUpInfoService.updateOne(sighUpInfo,username,projectName);
+                                             @PathVariable("sighUpInfoId") Integer sighUpInfoId,
+                                             @PathVariable("userId")Integer userId,
+                                             @PathVariable("projectId")Integer projectId){
+        return sighUpInfoService.updateOne(sighUpInfo,userId,projectId,sighUpInfoId);
+    }
+
+    @RequiresPermissions(value = entity + PermissionActionConstant.UPDATE)
+    @PatchMapping(value = UserController.entity + "/{userId}/" + ProjectController.entity + "/{projectId}/" + entity + "/{sighUpInfoId}")
+    public ResponseModel updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(@RequestParam("checkCode") Integer checkCode,
+                                                             @PathVariable("userId")Integer userId,
+                                                             @PathVariable("projectId")Integer projectId,
+                                                             @PathVariable("sighUpInfoId") Integer sighUpInfoId){
+        return sighUpInfoService.updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(checkCode,userId,projectId,sighUpInfoId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.DELETE)
