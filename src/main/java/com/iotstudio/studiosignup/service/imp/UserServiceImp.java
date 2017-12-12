@@ -169,6 +169,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseModel studentRegister(User user, StudentInfo studentInfo) {
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleRepository.findRoleByName("学生"));
+        user.setRoleList(roleList);
         User savedUser = userRepository.save(user);
         studentInfo.setUserId(savedUser.getId());
         return new ResponseModel(studentInfoRepository.save(studentInfo));
@@ -176,6 +179,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseModel teacherRegister(User user, TeacherInfo teacherInfo) {
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleRepository.findRoleByName("教师"));
+        user.setRoleList(roleList);
         User savedUser = userRepository.save(user);
         teacherInfo.setUserId(savedUser.getId());
         return new ResponseModel(teacherInfoRepository.save(teacherInfo));

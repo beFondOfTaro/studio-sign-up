@@ -6,6 +6,7 @@ import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,4 +88,8 @@ public class UserController {
         return userService.deleteOneById(id);
     }
 
+    @DeleteMapping(value = "logout")
+    public ResponseModel userLogout(){
+        return userService.logout((String) SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal());
+    }
 }
