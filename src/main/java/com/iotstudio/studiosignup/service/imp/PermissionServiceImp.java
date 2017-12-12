@@ -62,7 +62,7 @@ public class PermissionServiceImp implements PermissionService {
     @Override
     public ResponseModel selectAllByPage(Integer page,Integer size) {
         //建立分页请求，返回一个Pageable对象
-        Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
+        Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"name","ownerAvailable");
         //根据分页请求查询所有实体
         Page<Permission> permissionPage = permissionRepository.findAll(pageable);
         PageDataModel permissionPageDataModel =

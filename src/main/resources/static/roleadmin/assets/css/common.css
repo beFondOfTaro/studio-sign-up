@@ -1,0 +1,11 @@
+.right-button{
+    padding-bottom: 15px;
+    text-align: right;
+}
+.fix-pencil{
+    margin-right: 10px;
+    float: right;
+}
+.fix-trash{
+    float: right;
+}

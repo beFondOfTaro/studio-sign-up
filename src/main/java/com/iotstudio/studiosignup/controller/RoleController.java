@@ -65,4 +65,9 @@ public class RoleController {
         return roleService.deleteOneById(id);
     }
 
+    @RequiresPermissions(entity+PermissionActionConstant.FIND)
+    @GetMapping(value = entity+"/{roleId}/"+PermissionController.entity)
+    public ResponseModel getPermissionListByRoleId(@PathVariable("roleId") Integer roleId){
+        return roleService.getPermissionListByRoleId(roleId);
+    }
 }

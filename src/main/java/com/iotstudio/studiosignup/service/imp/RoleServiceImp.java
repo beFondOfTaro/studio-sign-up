@@ -70,4 +70,9 @@ public class RoleServiceImp implements RoleService {
                 );
         return new ResponseModel(rolePageDataModel);
     }
+
+    @Override
+    public ResponseModel getPermissionListByRoleId(Integer roleId) {
+        return new ResponseModel(roleRepository.findOne(roleId).getPermissionList());
+    }
 }

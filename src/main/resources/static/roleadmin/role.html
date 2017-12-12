@@ -7,13 +7,14 @@
     <meta content="webthemez" name="author"/>
     <title>角色权限管理</title>
     <!-- Bootstrap Styles-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
     <link href="assets/css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom Styles-->
     <link href="assets/css/custom-styles.css" rel="stylesheet"/>
     <!-- Google Fonts-->
     <link href='assets/css/font-index.css' rel='stylesheet' type='text/css'/>
+    <link href="assets/css/common.css" rel="stylesheet">
 </head>
 <body>
 <div id="wrapper">
@@ -290,12 +291,24 @@
                         <div class="panel-heading">
                             角色列表
                         </div>
-                        <div class="panel-body">
-                            <a href="#" class="btn btn-info">新建角色</a>
+                        <div class="panel-body pre-scrollable">
+                            <div class="right-button"><a href="#" class="btn btn-info">新建角色</a></div>
                             <!-- List group -->
-                            <ul class="list-group" v-for="role in responseData.data.content">
-                                <li class="list-group-item">{{role.name}}<i class="fa fa-pencil" aria-hidden="true"></i></li>
-                            </ul>
+                            <div class="list-group">
+                                <button
+                                        type="button" :class="'list-group-item' + (selectedRoleId==role.id ? ' active' : '')"
+                                        href="javascript:void (0)" v-for="role in roleData.data.content"
+                                        @click="getPermissionsByRoleId(role.id)"
+                                >
+                                    {{role.name}}
+                                    <a class="fix-trash" href="javascript:void (0)" title="删除">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="fix-pencil" href="javascript:void(0)" title="修改">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                </button>
+                            </div>
                         </div>
                         <div class="panel-footer">
                             Panel Footer
@@ -305,17 +318,21 @@
                 <div class="col-md-7 col-sm-7">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            Info Panel
+                            权限信息
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body pre-scrollable">
                             <!-- List group -->
-                            <ul class="list-group">
-                                <li class="list-group-item">Cras justo odio</li>
-                                <li class="list-group-item">Dapibus ac facilisis in</li>
-                                <li class="list-group-item">Morbi leo risus</li>
-                                <li class="list-group-item">Porta ac consectetur ac</li>
-                                <li class="list-group-item">Vestibulum at eros</li>
-                            </ul>
+                            <form id="permission-form">
+                                <ul class="list-group" v-for="permission in permissionData.data.content">
+                                    <div class="checkbox3 checkbox-round">
+                                        <input type="checkbox" :id="'checkbox-'+ permission.id" :value="permission.id"
+                                               name="id">
+                                        <label :for="'checkbox-'+ permission.id">
+                                            {{permission.name}}
+                                        </label>
+                                    </div>
+                                </ul>
+                            </form>
                         </div>
                         <div class="panel-footer">
                             Panel Footer
@@ -350,29 +367,69 @@
             clientId: $.cookie('client_id'),
             digest: $.cookie('digest'),
             apiPrefix: 'http://localhost:8080/v1/',
-            responseData: {}
+            selectedRoleId: '',
+            roleData: {},
+            permissionData: {}
         },
         created: function () {
             this.getRoleList();
+            this.getPermissionList();
         },
-        methods:{
+        methods: {
             getRoleList: function () {
                 this.$http.get(
                     this.apiPrefix + 'role',
                     {
-                        params:{
+                        params: {
                             client_id: this.clientId,
                             digest: this.digest
                         }
                     }
                 ).then(function (data) {
-                    if (data.body.successful){
-                        this.responseData = data.body;
-                        console.log('获取角色列表成功');
-                    }else {
-                        console.log('获取角色列表失败');
+                    if (data.body.successful) {
+                        this.roleData = data.body;
                     }
+                    console.log(data.body.msg);
                 });
+            },
+            getPermissionList: function () {
+                this.$http.get(
+                    this.apiPrefix + 'permission',
+                    {
+                        params: {
+                            size: '300',
+                            client_id: this.clientId,
+                            digest: this.digest
+                        }
+                    }
+                ).then(
+                    function (data) {
+                        if (data.body.successful) {
+                            this.permissionData = data.body;
+                        }
+                        console.log(data.body.msg);
+                    }
+                )
+            },
+            getPermissionsByRoleId: function (roleId) {
+                this.selectedRoleId = roleId;
+                this.$http.get(
+                    this.apiPrefix + 'role/'+roleId+'/permission',
+                    {
+                        params: {
+                            client_id: this.clientId,
+                            digest: this.digest,
+                            roleId: roleId
+                        }
+                    }
+                ).then(
+                    function (data) {
+                        if (data.body.successful) {
+                            this.permissionData = data.body;
+                        }
+                        console.log(data.body.msg);
+                    }
+                )
             }
         }
     })

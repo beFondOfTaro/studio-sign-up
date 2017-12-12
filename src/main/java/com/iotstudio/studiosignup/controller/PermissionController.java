@@ -40,4 +40,5 @@ public class PermissionController {
     public ResponseModel permissionFindOneById(@PathVariable("permissionId") Integer id){
         return permissionService.selectOneById(id);
     }
+
 }
