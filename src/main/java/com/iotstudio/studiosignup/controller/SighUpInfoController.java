@@ -58,6 +58,17 @@ public class SighUpInfoController {
         return sighUpInfoService.findSighUpInfosByProjectId(projectId);
     }
 
+    /**
+     * 查询某个学生的所有报名信息
+     * @param userId 用户id
+     * @return 某个学生的所有报名信息
+     */
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = UserController.entity + "/{userId}/" + entity)
+    public ResponseModel findSighUpInfosByUserId(@PathVariable("userId") Integer userId){
+        return sighUpInfoService.findSighUpInfosByUserId(userId);
+    }
+
     @RequiresPermissions(entity + PermissionActionConstant.ADD)
     @PostMapping(value = UserController.entity + "/{userId}/" + entity)
     public ResponseModel sighUpInfoAddOne(SighUpInfo sighUpInfo,

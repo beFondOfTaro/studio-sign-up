@@ -155,4 +155,18 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
         }
         return new ResponseModel(sighUpInfoVoList);
     }
+
+    @Override
+    public ResponseModel findSighUpInfosByUserId(Integer userId) {
+        User user = new User();
+        user.setId(userId);
+        List<SighUpInfo> sighUpInfoList = sighUpInfoRepository.findAllByUser(user);
+        List<SighUpInfoVo> sighUpInfoVoList = new ArrayList<>();
+        for (SighUpInfo sighUpInfo : sighUpInfoList){
+            User gotUser = sighUpInfo.getUser();
+            StudentInfo studentInfo = studentInfoRepository.findByUserId(gotUser.getId());
+            sighUpInfoVoList.add(SighUpInfoVoConverter.convert(sighUpInfo,studentInfo,gotUser));
+        }
+        return new ResponseModel(sighUpInfoVoList);
+    }
 }

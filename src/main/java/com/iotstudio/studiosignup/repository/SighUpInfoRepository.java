@@ -22,4 +22,5 @@ public interface SighUpInfoRepository extends JpaRepository<SighUpInfo,Integer> 
     int updateByUserIdAndProjectId(Integer checkCode, Integer userId, Integer projectId, Integer sighUpInfoId);
 
     List<SighUpInfo> findSighUpInfoListByProject(Project project);
+    List<SighUpInfo> findAllByUser(User user);
 }

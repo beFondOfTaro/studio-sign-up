@@ -10,4 +10,5 @@ public class SighUpInfoVo {
     private String phone;
     private Integer checkCode;
     private String personalIntroduction;
+    private String projectName;
 }

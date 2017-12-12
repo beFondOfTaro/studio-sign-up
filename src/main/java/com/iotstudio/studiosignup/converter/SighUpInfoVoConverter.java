@@ -14,6 +14,7 @@ public class SighUpInfoVoConverter {
         vo.setPhone(user.getPhone());
         vo.setPersonalIntroduction(sighUpInfo.getPersonalIntroduction());
         vo.setCheckCode(sighUpInfo.getCheckCode());
+        vo.setProjectName(sighUpInfo.getProject().getName());
         return vo;
     }
 }
