@@ -1,9 +1,12 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.object.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.TeacherInfo;
 import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.object.vo.UserStudentInfoVo;
+import com.iotstudio.studiosignup.object.vo.UserTeacherVo;
 import com.iotstudio.studiosignup.repository.StudentInfoRepository;
+import com.iotstudio.studiosignup.repository.TeacherInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.VoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
@@ -20,20 +23,39 @@ public class VoServiceImp implements VoService {
     private UserRepository userRepository;
     @Autowired
     private StudentInfoRepository studentInfoRepository;
+    @Autowired
+    private TeacherInfoRepository teacherInfoRepository;
 
     @Override
     public ResponseModel getUserStudentInfo(Integer userId) {
         User user = userRepository.findOne(userId);
         StudentInfo studentInfo = studentInfoRepository.findByUserId(userId);
         UserStudentInfoVo vo = new UserStudentInfoVo();
+        if (studentInfo!=null){
+            vo.setMajor(studentInfo.getMajor());
+            vo.setPhoto(studentInfo.getPhoto());
+            vo.setQqNumber(studentInfo.getQqNumber());
+            vo.setStudentNumber(studentInfo.getStudentNumber());
+        }
         vo.setId(userId);
-        vo.setMajor(studentInfo.getMajor());
         vo.setPhone(user.getPhone());
-        vo.setPhoto(studentInfo.getPhoto());
-        vo.setQqNumber(studentInfo.getQqNumber());
         vo.setRealName(user.getRealName());
         vo.setUsername(user.getUsername());
-        vo.setStudentNumber(studentInfo.getStudentNumber());
+        return new ResponseModel(vo);
+    }
+
+    @Override
+    public ResponseModel getUserTeacherInfo(Integer userId) {
+        User user = userRepository.findOne(userId);
+        TeacherInfo teacherInfo = teacherInfoRepository.findTeacherInfoByUserId(userId);
+        UserTeacherVo vo = new UserTeacherVo();
+        if (teacherInfo != null){
+            vo.setTeacherNumber(teacherInfo.getTeacherNumber());
+        }
+        vo.setUserId(userId);
+        vo.setUsername(user.getUsername());
+        vo.setRealName(user.getRealName());
+        vo.setPhone(user.getPhone());
         return new ResponseModel(vo);
     }
 }

@@ -20,4 +20,9 @@ public class VoController {
     public ResponseModel getUserStudentInfo(){
         return voService.getUserStudentInfo(Integer.valueOf ((String) (SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal())));
     }
+
+    @GetMapping("getUserTeacherInfo")
+    public ResponseModel getUserTeacherInfo(){
+        return voService.getUserTeacherInfo(Integer.valueOf ((String) (SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal())));
+    }
 }

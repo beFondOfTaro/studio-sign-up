@@ -5,4 +5,5 @@ import com.iotstudio.studiosignup.util.model.ResponseModel;
 public interface VoService {
 
     ResponseModel getUserStudentInfo(Integer userId);
+    ResponseModel getUserTeacherInfo(Integer userId);
 }
