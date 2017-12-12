@@ -1,10 +1,11 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.object.entity.StudentInfo;
-import com.iotstudio.studiosignup.object.entity.TeacherInfo;
-import com.iotstudio.studiosignup.object.entity.User;
+import com.iotstudio.studiosignup.converter.SighUpInfoVoConverter;
+import com.iotstudio.studiosignup.object.entity.*;
+import com.iotstudio.studiosignup.object.vo.SighUpInfoVo;
 import com.iotstudio.studiosignup.object.vo.UserStudentInfoVo;
 import com.iotstudio.studiosignup.object.vo.UserTeacherVo;
+import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.StudentInfoRepository;
 import com.iotstudio.studiosignup.repository.TeacherInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
@@ -25,6 +26,8 @@ public class VoServiceImp implements VoService {
     private StudentInfoRepository studentInfoRepository;
     @Autowired
     private TeacherInfoRepository teacherInfoRepository;
+    @Autowired
+    private SighUpInfoRepository sighUpInfoRepository;
 
     @Override
     public ResponseModel getUserStudentInfo(Integer userId) {
@@ -57,5 +60,13 @@ public class VoServiceImp implements VoService {
         vo.setRealName(user.getRealName());
         vo.setPhone(user.getPhone());
         return new ResponseModel(vo);
+    }
+
+    @Override
+    public ResponseModel getUserSighUpInfo(Integer sighUpInfoId) {
+        SighUpInfo sighUpInfo = sighUpInfoRepository.findOne(sighUpInfoId);
+        User user = sighUpInfo.getUser();
+        StudentInfo studentInfo = studentInfoRepository.findByUserId(user.getId());
+        return new ResponseModel(SighUpInfoVoConverter.convert(sighUpInfo,studentInfo,user));
     }
 }

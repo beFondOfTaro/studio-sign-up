@@ -43,8 +43,9 @@ public class ProjectController {
 
     @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = UserController.entity + "/{userId}/" + entity+"/{projectId}")
-    public ResponseModel projectFindOneById(@PathVariable("projectId") Integer id){
-        return projectService.selectOneById(id);
+    public ResponseModel projectFindOneById(@PathVariable("userId") Integer userId,
+                                            @PathVariable("projectId") Integer projectId){
+        return projectService.findProjectByUserIdAndProjectId(userId,projectId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.FIND)

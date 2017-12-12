@@ -83,4 +83,11 @@ public class ProjectServiceImp implements ProjectService {
         user.setId(userId);
         return new ResponseModel(projectRepository.findAllByUser(user));
     }
+
+    @Override
+    public ResponseModel findProjectByUserIdAndProjectId(Integer userId, Integer projectId) {
+        User user = new User();
+        user.setId(userId);
+        return new ResponseModel(projectRepository.findProjectByUserAndId(user,projectId));
+    }
 }

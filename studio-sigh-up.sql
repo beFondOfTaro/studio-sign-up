@@ -29,7 +29,7 @@ CREATE TABLE `permission` (
 
 /*Data for the table `permission` */
 
-insert  into `permission`(`id`,`name`,`owner_available`) values (1,'user:add',1),(2,'user:update',1),(3,'user:delete',2),(4,'user:find',1),(5,'teacherInfo:add',1),(6,'teacherInfo:update',1),(7,'teacherInfo:delete',2),(8,'teacherInfo:find',1),(9,'studentInfo:add',1),(10,'studentInfo:update',1),(11,'studentInfo:delete',2),(12,'role:add',2),(13,'role:update',2),(14,'role:delete',2),(15,'role:find',2),(16,'project:add',1),(17,'project:update',1),(18,'project:delete',2),(19,'project:find',1),(20,'studentInfo:find',1),(22,'userRole:find',1),(23,'userRole:add',2),(24,'userRole:update',2),(25,'userRole:delete',2),(26,'rolePermission:find',1),(27,'rolePermission:add',2),(28,'rolePermission:update',2),(29,'rolePermission:delete',2),(30,'sighUpInfo:add',1),(31,'sighUpInfo:find',1),(32,'sighUpInfo:update',1),(33,'sighUpInfo:delete',1),(34,'permission:find',1),(35,'permission:delete',1),(36,'permission:add',1),(37,'permission:update',1);
+insert  into `permission`(`id`,`name`,`owner_available`) values (1,'user:add',1),(2,'user:update',1),(3,'user:delete',2),(4,'user:find',1),(5,'teacherInfo:add',1),(6,'teacherInfo:update',1),(7,'teacherInfo:delete',2),(8,'teacherInfo:find',1),(9,'studentInfo:add',1),(10,'studentInfo:update',1),(11,'studentInfo:delete',2),(12,'role:add',2),(13,'role:update',2),(14,'role:delete',2),(15,'role:find',1),(16,'project:add',1),(17,'project:update',1),(18,'project:delete',2),(19,'project:find',1),(20,'studentInfo:find',1),(22,'userRole:find',1),(23,'userRole:add',2),(24,'userRole:update',2),(25,'userRole:delete',2),(26,'rolePermission:find',1),(27,'rolePermission:add',2),(28,'rolePermission:update',2),(29,'rolePermission:delete',2),(30,'sighUpInfo:add',1),(31,'sighUpInfo:find',1),(32,'sighUpInfo:update',1),(33,'sighUpInfo:delete',1),(34,'permission:find',1),(35,'permission:delete',2),(36,'permission:add',2),(37,'permission:update',2);
 
 /*Table structure for table `project` */
 
@@ -45,11 +45,11 @@ CREATE TABLE `project` (
   KEY `FKo06v2e9kuapcugnyhttqa1vpt` (`user_id`),
   CONSTRAINT `FKo06v2e9kuapcugnyhttqa1vpt` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `project_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `project` */
 
-insert  into `project`(`id`,`user_id`,`name`,`introduction`,`created_time`) values (1,1,'云平台','asdas','2017-11-23 18:31:36'),(2,1,'区块链','asdasd','2017-11-23 18:31:37'),(4,1,'wingstudio','','2017-12-01 19:04:24');
+insert  into `project`(`id`,`user_id`,`name`,`introduction`,`created_time`) values (1,1,'云平台','asdas','2017-11-23 18:31:36'),(2,1,'区块链','asdasd','2017-11-23 18:31:37'),(4,1,'wingstudio','','2017-12-01 19:04:24'),(5,1,'嘻嘻嘻','12312312asdasd','2017-12-12 23:39:36');
 
 /*Table structure for table `role` */
 
@@ -76,16 +76,16 @@ CREATE TABLE `role_permission` (
   `role_id` int(11) NOT NULL,
   `permission_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `permission_id` (`permission_id`),
   KEY `FKa6jx8n8xkesmjmv6jqug6bg68` (`role_id`),
+  KEY `FKf8yllw1ecvwqy3ehyxawqa1qp` (`permission_id`),
   CONSTRAINT `FKa6jx8n8xkesmjmv6jqug6bg68` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `FKf8yllw1ecvwqy3ehyxawqa1qp` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`),
   CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `role_permission` */
 
-insert  into `role_permission`(`id`,`role_id`,`permission_id`) values (1,3,32),(2,3,15),(3,3,34),(4,3,35),(5,3,36),(6,3,37);
+insert  into `role_permission`(`id`,`role_id`,`permission_id`) values (1,3,32),(2,3,15),(3,3,34),(4,3,35),(5,3,36),(6,3,37),(7,3,16),(8,3,1),(9,3,2),(12,4,16),(13,3,19),(14,2,19),(15,4,19),(16,4,20),(17,4,17),(18,4,17),(19,4,31),(20,4,32),(21,4,34),(22,2,8);
 
 /*Table structure for table `sigh_up_info` */
 
@@ -122,7 +122,7 @@ CREATE TABLE `student_info` (
   `student_number` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '学号',
   `major` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '专业',
   `qq_number` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT 'qq号',
-  `photo` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '学生照片路径',
+  `photo` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '学生照片路径',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `student_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
@@ -143,9 +143,11 @@ CREATE TABLE `teacher_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `teacher_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `teacher_info` */
+
+insert  into `teacher_info`(`id`,`user_id`,`teacher_number`) values (2,12,'123x'),(3,13,'123x');
 
 /*Table structure for table `user` */
 
@@ -160,11 +162,11 @@ CREATE TABLE `user` (
   `created_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`username`,`password`,`real_name`,`phone`,`created_time`) values (1,'hyzz','12354565','黄雅哲','1235661','2017-11-23 18:11:59'),(2,'admin','123456','asdas','1231234','2017-12-06 22:47:50'),(3,'test','123456','阿萨德','1234','2017-12-06 23:32:35'),(4,'test2','123456','阿斯达斯','78876','2017-12-09 18:20:52'),(5,'test3','123456','阿斯达斯','78876','2017-12-09 18:26:51'),(8,'test4','123456','阿斯达斯','78876','2017-12-09 18:31:25'),(9,'stu1','12354565','asd','12312','2017-12-12 16:08:51');
+insert  into `user`(`id`,`username`,`password`,`real_name`,`phone`,`created_time`) values (1,'hyzz','12354565','黄雅哲','1235661','2017-11-23 18:11:59'),(2,'admin','123456','asdas','1231234','2017-12-06 22:47:50'),(3,'test','123456','阿萨德','1234','2017-12-06 23:32:35'),(4,'test2','123456','阿斯达斯','78876','2017-12-09 18:20:52'),(5,'test3','123456','阿斯达斯','78876','2017-12-09 18:26:51'),(8,'test4','123456','阿斯达斯','78876','2017-12-09 18:31:25'),(9,'stu1','12354565','asd','12312','2017-12-12 16:08:51'),(12,'stu2','12354565','asd','12312','2017-12-12 17:11:05'),(13,'stu3','12354565','asd','12312','2017-12-12 17:14:04');
 
 /*Table structure for table `user_role` */
 
@@ -181,11 +183,11 @@ CREATE TABLE `user_role` (
   CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `user_role` */
 
-insert  into `user_role`(`id`,`user_id`,`role_id`) values (1,1,3),(2,4,2),(3,5,2),(5,8,3),(6,9,2);
+insert  into `user_role`(`id`,`user_id`,`role_id`) values (1,1,3),(2,4,2),(3,5,2),(5,8,3),(6,9,2),(7,12,4),(8,13,4);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

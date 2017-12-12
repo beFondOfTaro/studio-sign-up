@@ -6,6 +6,7 @@ import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,10 @@ public class VoController {
     @GetMapping("getUserTeacherInfo")
     public ResponseModel getUserTeacherInfo(){
         return voService.getUserTeacherInfo(Integer.valueOf ((String) (SecurityUtils.getSubject().getPrincipals().getPrimaryPrincipal())));
+    }
+
+    @GetMapping("getUserSighUpInfo/{sighUpInfoId}")
+    public ResponseModel getUserSighUpInfo(@PathVariable("sighUpInfoId") Integer sighUpInfoId){
+        return voService.getUserSighUpInfo(sighUpInfoId);
     }
 }

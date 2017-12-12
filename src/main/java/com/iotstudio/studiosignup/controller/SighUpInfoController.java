@@ -1,6 +1,7 @@
 package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.constant.PermissionActionConstant;
+import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.object.entity.SighUpInfo;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping(RoleNameConstant.API_VERSION)
 public class SighUpInfoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SighUpInfoController.class);
@@ -52,8 +54,8 @@ public class SighUpInfoController {
      */
     @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = ProjectController.entity + "/{projectId}/" + entity)
-    public ResponseModel findSighUpInfoByProjectId(@PathVariable("userId") Integer projectId){
-        return sighUpInfoService.findSighUpInfoByProjectId(projectId);
+    public ResponseModel findSighUpInfosByProjectId(@PathVariable("projectId") Integer projectId){
+        return sighUpInfoService.findSighUpInfosByProjectId(projectId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.ADD)

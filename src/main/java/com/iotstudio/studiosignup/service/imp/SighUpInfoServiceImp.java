@@ -1,10 +1,14 @@
 package com.iotstudio.studiosignup.service.imp;
 
+import com.iotstudio.studiosignup.converter.SighUpInfoVoConverter;
 import com.iotstudio.studiosignup.object.entity.Project;
 import com.iotstudio.studiosignup.object.entity.SighUpInfo;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
 import com.iotstudio.studiosignup.object.entity.User;
+import com.iotstudio.studiosignup.object.vo.SighUpInfoVo;
 import com.iotstudio.studiosignup.repository.ProjectRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
+import com.iotstudio.studiosignup.repository.StudentInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
@@ -20,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -33,6 +39,8 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     private ProjectRepository projectRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private StudentInfoRepository studentInfoRepository;
 
     @Override
     public ResponseModel addOne(SighUpInfo sighUpInfo) {
@@ -131,13 +139,20 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
         user.setId(userId);
         Project project = new Project();
         project.setId(projectId);
-        return new ResponseModel(sighUpInfoRepository.findSighUpInfoByUserAndProject(user,project));
+        return new ResponseModel(sighUpInfoRepository.findSighUpInfoListByUserAndProject(user,project));
     }
 
     @Override
-    public ResponseModel findSighUpInfoByProjectId(Integer projectId) {
+    public ResponseModel findSighUpInfosByProjectId(Integer projectId) {
         Project project = new Project();
         project.setId(projectId);
-        return new ResponseModel(sighUpInfoRepository.findSighUpInfoByProject(project));
+        List<SighUpInfo> sighUpInfoList = sighUpInfoRepository.findSighUpInfoListByProject(project);
+        List<SighUpInfoVo> sighUpInfoVoList = new ArrayList<>();
+        for (SighUpInfo sighUpInfo : sighUpInfoList){
+            User user = sighUpInfo.getUser();
+            StudentInfo studentInfo = studentInfoRepository.findByUserId(user.getId());
+            sighUpInfoVoList.add(SighUpInfoVoConverter.convert(sighUpInfo,studentInfo,user));
+        }
+        return new ResponseModel(sighUpInfoVoList);
     }
 }

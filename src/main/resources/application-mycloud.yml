@@ -1,0 +1,12 @@
+spring:
+#redis配置
+  redis:
+    host: 39.108.97.103
+    port: 6379
+  #mysql
+  datasource:
+    username: hyz
+    password: 123456
+    url: jdbc:mysql://39.108.97.103:3306/studio_sigh_up_db
+file:
+  uploadPath: /repository

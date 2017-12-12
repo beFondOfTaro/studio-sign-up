@@ -6,4 +6,5 @@ public interface VoService {
 
     ResponseModel getUserStudentInfo(Integer userId);
     ResponseModel getUserTeacherInfo(Integer userId);
+    ResponseModel getUserSighUpInfo(Integer sighUpInfoId);
 }

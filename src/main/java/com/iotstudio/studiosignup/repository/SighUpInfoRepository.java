@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface SighUpInfoRepository extends JpaRepository<SighUpInfo,Integer> {
-    SighUpInfo findSighUpInfoByUserAndProject(User user,Project project);
+    List<SighUpInfo> findSighUpInfoListByUserAndProject(User user, Project project);
     void deleteByProject(Project project);
     void deleteByUser(User user);
 
@@ -19,5 +21,5 @@ public interface SighUpInfoRepository extends JpaRepository<SighUpInfo,Integer> 
             nativeQuery = true)
     int updateByUserIdAndProjectId(Integer checkCode, Integer userId, Integer projectId, Integer sighUpInfoId);
 
-    SighUpInfo findSighUpInfoByProject(Project project);
+    List<SighUpInfo> findSighUpInfoListByProject(Project project);
 }
