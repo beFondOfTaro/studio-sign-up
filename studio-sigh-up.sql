@@ -16,6 +16,21 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`studio_sigh_up_db` /*!40100 DEFAULT CHA
 
 USE `studio_sigh_up_db`;
 
+/*Table structure for table `permission` */
+
+DROP TABLE IF EXISTS `permission`;
+
+CREATE TABLE `permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '权限名',
+  `owner_available` tinyint(1) NOT NULL DEFAULT '1' COMMENT '该权限对应的资源是否是允许资源所有者访问',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+/*Data for the table `permission` */
+
+insert  into `permission`(`id`,`name`,`owner_available`) values (1,'user:add',1),(2,'user:update',1),(3,'user:delete',2),(4,'user:find',1),(5,'teacherInfo:add',1),(6,'teacherInfo:update',1),(7,'teacherInfo:delete',2),(8,'teacherInfo:find',1),(9,'studentInfo:add',1),(10,'studentInfo:update',1),(11,'studentInfo:delete',2),(12,'role:add',2),(13,'role:update',2),(14,'role:delete',2),(15,'role:find',2),(16,'project:add',1),(17,'project:update',1),(18,'project:delete',2),(19,'project:find',1),(20,'studentInfo:find',1),(22,'userRole:find',1),(23,'userRole:add',2),(24,'userRole:update',2),(25,'userRole:delete',2),(26,'rolePermission:find',1),(27,'rolePermission:add',2),(28,'rolePermission:update',2),(29,'rolePermission:delete',2),(30,'sighUpInfo:add',1),(31,'sighUpInfo:find',1),(32,'sighUpInfo:update',1),(33,'sighUpInfo:delete',1),(34,'permission:find',1),(35,'permission:delete',1),(36,'permission:add',1),(37,'permission:update',1);
+
 /*Table structure for table `project` */
 
 DROP TABLE IF EXISTS `project`;
@@ -44,12 +59,33 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '角色名',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name_2` (`name`),
   KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `role` */
 
 insert  into `role`(`id`,`name`) values (2,'学生'),(4,'教师'),(3,'管理员');
+
+/*Table structure for table `role_permission` */
+
+DROP TABLE IF EXISTS `role_permission`;
+
+CREATE TABLE `role_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permission_id` (`permission_id`),
+  KEY `FKa6jx8n8xkesmjmv6jqug6bg68` (`role_id`),
+  CONSTRAINT `FKa6jx8n8xkesmjmv6jqug6bg68` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+  CONSTRAINT `FKf8yllw1ecvwqy3ehyxawqa1qp` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`),
+  CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+/*Data for the table `role_permission` */
+
+insert  into `role_permission`(`id`,`role_id`,`permission_id`) values (1,3,32),(2,3,15),(3,3,34),(4,3,35),(5,3,36),(6,3,37);
 
 /*Table structure for table `sigh_up_info` */
 
@@ -60,6 +96,7 @@ CREATE TABLE `sigh_up_info` (
   `user_id` int(11) DEFAULT NULL COMMENT '学生id',
   `project_id` int(11) DEFAULT NULL COMMENT '报名项目id',
   `personal_introduction` varchar(2000) COLLATE utf8_bin DEFAULT NULL COMMENT '个人介绍',
+  `check_code` int(11) DEFAULT '1' COMMENT '审核代码,1:待审核，2:未通过,3:通过',
   `created_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `FKlqt3kvcxenwb5gktm2vtjjfs3` (`project_id`),
@@ -73,7 +110,7 @@ CREATE TABLE `sigh_up_info` (
 
 /*Data for the table `sigh_up_info` */
 
-insert  into `sigh_up_info`(`id`,`user_id`,`project_id`,`personal_introduction`,`created_time`) values (5,1,1,'asdasd','2017-12-01 21:54:56');
+insert  into `sigh_up_info`(`id`,`user_id`,`project_id`,`personal_introduction`,`check_code`,`created_time`) values (5,1,1,'asdasd',2,'2017-12-01 21:54:56');
 
 /*Table structure for table `student_info` */
 
@@ -81,17 +118,19 @@ DROP TABLE IF EXISTS `student_info`;
 
 CREATE TABLE `student_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL COMMENT '所属用户id',
-  `student_number` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '学号',
-  `major` varchar(40) COLLATE utf8_bin DEFAULT NULL COMMENT '专业',
+  `user_id` int(11) DEFAULT NULL,
+  `student_number` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '学号',
+  `major` varchar(40) COLLATE utf8_bin NOT NULL COMMENT '专业',
   `qq_number` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT 'qq号',
-  `photo` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT '学生照片路径',
+  `photo` varchar(200) COLLATE utf8_bin NOT NULL COMMENT '学生照片路径',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `student_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `student_info` */
+
+insert  into `student_info`(`id`,`user_id`,`student_number`,`major`,`qq_number`,`photo`) values (6,1,'20158808','',NULL,'85f0338b-dccd-4d1e-9ff2-43a410759df6.dll');
 
 /*Table structure for table `teacher_info` */
 
@@ -99,11 +138,11 @@ DROP TABLE IF EXISTS `teacher_info`;
 
 CREATE TABLE `teacher_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL COMMENT '所属user的id',
+  `user_id` int(11) DEFAULT NULL,
   `teacher_number` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '教师工号',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `teacher_info_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  UNIQUE KEY `user_id` (`user_id`),
+  CONSTRAINT `teacher_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `teacher_info` */
@@ -114,21 +153,39 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `role_id` int(11) NOT NULL COMMENT '角色id',
   `username` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '用户名',
-  `password` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '密码',
-  `real_name` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '真实姓名',
+  `password` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '密码',
+  `real_name` varchar(10) COLLATE utf8_bin NOT NULL COMMENT '真实姓名',
   `phone` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '电话',
   `created_time` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `FKn82ha3ccdebhokx3a8fgdqeyy` (`role_id`),
-  CONSTRAINT `FKn82ha3ccdebhokx3a8fgdqeyy` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
-  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `user` */
 
-insert  into `user`(`id`,`role_id`,`username`,`password`,`real_name`,`phone`,`created_time`) values (1,2,'hyzz','12354565','黄雅哲','1235661','2017-11-23 18:11:59');
+insert  into `user`(`id`,`username`,`password`,`real_name`,`phone`,`created_time`) values (1,'hyzz','12354565','黄雅哲','1235661','2017-11-23 18:11:59'),(2,'admin','123456','asdas','1231234','2017-12-06 22:47:50'),(3,'test','123456','阿萨德','1234','2017-12-06 23:32:35'),(4,'test2','123456','阿斯达斯','78876','2017-12-09 18:20:52'),(5,'test3','123456','阿斯达斯','78876','2017-12-09 18:26:51'),(8,'test4','123456','阿斯达斯','78876','2017-12-09 18:31:25'),(9,'stu1','12354565','asd','12312','2017-12-12 16:08:51');
+
+/*Table structure for table `user_role` */
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKa68196081fvovjhkek5m97n3y` (`role_id`),
+  KEY `FK859n2jvi8ivhui0rl0esws6o` (`user_id`),
+  CONSTRAINT `FK859n2jvi8ivhui0rl0esws6o` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FKa68196081fvovjhkek5m97n3y` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
+  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+/*Data for the table `user_role` */
+
+insert  into `user_role`(`id`,`user_id`,`role_id`) values (1,1,3),(2,4,2),(3,5,2),(5,8,3),(6,9,2);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

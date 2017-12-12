@@ -4,10 +4,10 @@ import com.iotstudio.studiosignup.constant.HttpParamKey;
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
 import com.iotstudio.studiosignup.entity.Role;
+import com.iotstudio.studiosignup.entity.StudentInfo;
+import com.iotstudio.studiosignup.entity.TeacherInfo;
 import com.iotstudio.studiosignup.entity.User;
-import com.iotstudio.studiosignup.repository.RoleRepository;
-import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
-import com.iotstudio.studiosignup.repository.UserRepository;
+import com.iotstudio.studiosignup.repository.*;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
@@ -46,6 +46,10 @@ public class UserServiceImp implements UserService {
     private SighUpInfoRepository sighUpInfoRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private StudentInfoRepository studentInfoRepository;
+    @Autowired
+    private TeacherInfoRepository teacherInfoRepository;
     @Autowired
     private TokenUtil tokenUtil;
 
@@ -161,5 +165,19 @@ public class UserServiceImp implements UserService {
         }
         LOGGER.info(msg);
         return responseModel;
+    }
+
+    @Override
+    public ResponseModel studentRegister(User user, StudentInfo studentInfo) {
+        User savedUser = userRepository.save(user);
+        studentInfo.setUserId(savedUser.getId());
+        return new ResponseModel(studentInfoRepository.save(studentInfo));
+    }
+
+    @Override
+    public ResponseModel teacherRegister(User user, TeacherInfo teacherInfo) {
+        User savedUser = userRepository.save(user);
+        teacherInfo.setUserId(savedUser.getId());
+        return new ResponseModel(teacherInfoRepository.save(teacherInfo));
     }
 }

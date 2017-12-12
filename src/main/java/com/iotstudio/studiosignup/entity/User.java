@@ -17,7 +17,6 @@ public class User extends BaseEntity {
     inverseJoinColumns属性：该注解用于指定对方（非映射主体类）实体类与中间表的映射关系。
     它也是一个JoinColumn[]类型。该属性的用法与joinColumns是一致的。
      */
-    @NotNull
     @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name = "user_role",
         joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},

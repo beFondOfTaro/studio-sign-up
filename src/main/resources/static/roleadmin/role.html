@@ -296,9 +296,9 @@
                             <!-- List group -->
                             <div class="list-group">
                                 <button
-                                        type="button" :class="'list-group-item' + (selectedRoleId==role.id ? ' active' : '')"
-                                        href="javascript:void (0)" v-for="role in roleData.data.content"
-                                        @click="getPermissionsByRoleId(role.id)"
+                                        type="button" :class="'list-group-item' + (selectedRoleIndex==index ? ' active' : '')"
+                                        href="javascript:void (0)" v-for="(role,index) in roleData.data.content"
+                                        @click="showPermissions(index)"
                                 >
                                     {{role.name}}
                                     <a class="fix-trash" href="javascript:void (0)" title="删除">
@@ -323,7 +323,7 @@
                         <div class="panel-body pre-scrollable">
                             <!-- List group -->
                             <form id="permission-form">
-                                <ul class="list-group" v-for="permission in permissionData.data.content">
+                                <ul class="list-group" v-for="permission in permissions">
                                     <div class="checkbox3 checkbox-round">
                                         <input type="checkbox" :id="'checkbox-'+ permission.id" :value="permission.id"
                                                name="id">
@@ -367,9 +367,10 @@
             clientId: $.cookie('client_id'),
             digest: $.cookie('digest'),
             apiPrefix: 'http://localhost:8080/v1/',
-            selectedRoleId: '',
+            selectedRoleIndex: -1,//当前选择的角色索引
             roleData: {},
-            permissionData: {}
+            permissionData: {},//接口返回的数据
+            permissions : {}
         },
         created: function () {
             this.getRoleList();
@@ -411,25 +412,9 @@
                     }
                 )
             },
-            getPermissionsByRoleId: function (roleId) {
-                this.selectedRoleId = roleId;
-                this.$http.get(
-                    this.apiPrefix + 'role/'+roleId+'/permission',
-                    {
-                        params: {
-                            client_id: this.clientId,
-                            digest: this.digest,
-                            roleId: roleId
-                        }
-                    }
-                ).then(
-                    function (data) {
-                        if (data.body.successful) {
-                            this.permissionData = data.body;
-                        }
-                        console.log(data.body.msg);
-                    }
-                )
+            showPermissions: function (roleIndex) {
+                this.selectedRoleIndex = roleIndex;
+                this.permissions = this.roleData.data.content[this.selectedRoleIndex].permissionList
             }
         }
     })

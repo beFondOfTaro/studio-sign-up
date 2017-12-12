@@ -1,6 +1,8 @@
 package com.iotstudio.studiosignup.controller.publicAccess;
 
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
+import com.iotstudio.studiosignup.entity.StudentInfo;
+import com.iotstudio.studiosignup.entity.TeacherInfo;
 import com.iotstudio.studiosignup.entity.User;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
@@ -52,5 +54,23 @@ public class PublicController {
             return HttpResponseUtil.noAuthority(response);
         }
         return userService.addOne(user,roleName);
+    }
+
+    @PostMapping(value = "studentRegister")
+    public ResponseModel studentRegister(@Valid User user, @Valid StudentInfo studentInfo,
+                                         BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return BindingResultHandlerUtil.onError(bindingResult);
+        }
+        return userService.studentRegister(user,studentInfo);
+    }
+
+    @PostMapping(value = "teacherRegister")
+    public ResponseModel studentRegister(@Valid User user, @Valid TeacherInfo teacherInfo,
+                                         BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return BindingResultHandlerUtil.onError(bindingResult);
+        }
+        return userService.teacherRegister(user,teacherInfo);
     }
 }
