@@ -1,6 +1,7 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.object.entity.Project;
+import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.repository.ProjectRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.service.ProjectService;
@@ -74,5 +75,12 @@ public class ProjectServiceImp implements ProjectService {
                         projectPage.getContent()
                 );
         return new ResponseModel(projectPageDataModel);
+    }
+
+    @Override
+    public ResponseModel findProjectsByUserId(Integer userId) {
+        User user = new User();
+        user.setId(userId);
+        return new ResponseModel(projectRepository.findAllByUser(user));
     }
 }

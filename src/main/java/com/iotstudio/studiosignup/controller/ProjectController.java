@@ -43,15 +43,21 @@ public class ProjectController {
 
     @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = UserController.entity + "/{userId}/" + entity+"/{projectId}")
-    public ResponseModel projectFindOneById(@PathVariable("id") Integer id){
+    public ResponseModel projectFindOneById(@PathVariable("projectId") Integer id){
         return projectService.selectOneById(id);
+    }
+
+    @RequiresPermissions(entity + PermissionActionConstant.FIND)
+    @GetMapping(value = UserController.entity + "/{userId}/" + entity)
+    public ResponseModel findProjectsByUserId(@PathVariable("userId") Integer userId){
+        return projectService.findProjectsByUserId(userId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.ADD)
     @PostMapping(value = UserController.entity + "/{userId}/" + entity)
-    public ResponseModel projectAddOne(Project project,@RequestHeader(HttpParamKey.CLIENT_ID)Integer adminId){
+    public ResponseModel projectAddOne(Project project,@PathVariable("userId")Integer userId){
         User user = new User();
-        user.setId(adminId);
+        user.setId(userId);
         project.setUser(user);
         return projectService.addOne(project);
     }

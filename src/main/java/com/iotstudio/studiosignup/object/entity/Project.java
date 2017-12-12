@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Project extends BaseEntity {
 
-    @NotNull
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(referencedColumnName = "id")
     private User user;
