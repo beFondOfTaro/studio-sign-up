@@ -1,4 +1,4 @@
-package com.iotstudio.studiosignup.entity;
+package com.iotstudio.studiosignup.object.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

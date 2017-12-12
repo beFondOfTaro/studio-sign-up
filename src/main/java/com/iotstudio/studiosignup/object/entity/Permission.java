@@ -1,4 +1,4 @@
-package com.iotstudio.studiosignup.entity;
+package com.iotstudio.studiosignup.object.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

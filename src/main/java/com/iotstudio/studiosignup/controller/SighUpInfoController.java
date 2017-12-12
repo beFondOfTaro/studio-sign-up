@@ -1,14 +1,10 @@
 package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.constant.PermissionActionConstant;
-import com.iotstudio.studiosignup.constant.RoleNameConstant;
-import com.iotstudio.studiosignup.entity.Project;
-import com.iotstudio.studiosignup.entity.SighUpInfo;
+import com.iotstudio.studiosignup.object.entity.SighUpInfo;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.iotstudio.studiosignup.controller.publicAccess;
 
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
-import com.iotstudio.studiosignup.entity.StudentInfo;
-import com.iotstudio.studiosignup.entity.TeacherInfo;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.TeacherInfo;
+import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
 import com.iotstudio.studiosignup.util.HttpResponseUtil;

@@ -2,7 +2,7 @@ package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.constant.PermissionActionConstant;
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
-import com.iotstudio.studiosignup.entity.TeacherInfo;
+import com.iotstudio.studiosignup.object.entity.TeacherInfo;
 import com.iotstudio.studiosignup.service.TeacherInfoService;
 import com.iotstudio.studiosignup.util.BindingResultHandlerUtil;
 import com.iotstudio.studiosignup.util.model.ResponseModel;

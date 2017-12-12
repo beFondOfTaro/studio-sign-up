@@ -1,13 +1,12 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.config.StudentInfoConfig;
-import com.iotstudio.studiosignup.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
 import com.iotstudio.studiosignup.repository.StudentInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.StudentInfoService;
 import com.iotstudio.studiosignup.util.HttpResponseUtil;
 import com.iotstudio.studiosignup.util.ValidatorUtil;
-import com.iotstudio.studiosignup.util.fileutil.FileResponseData;
 import com.iotstudio.studiosignup.util.fileutil.FileUtil;
 import com.iotstudio.studiosignup.util.fileutil.WrittenFileInfo;
 import com.iotstudio.studiosignup.util.model.PageDataModel;

@@ -1,6 +1,6 @@
 package com.iotstudio.studiosignup.repository;
 
-import com.iotstudio.studiosignup.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

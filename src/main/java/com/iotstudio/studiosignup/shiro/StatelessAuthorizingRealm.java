@@ -1,8 +1,8 @@
 package com.iotstudio.studiosignup.shiro;
 
-import com.iotstudio.studiosignup.entity.Permission;
-import com.iotstudio.studiosignup.entity.Role;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.entity.Permission;
+import com.iotstudio.studiosignup.object.entity.Role;
+import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.repository.PermissionRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Set;
 
 public class StatelessAuthorizingRealm extends AuthorizingRealm {
 

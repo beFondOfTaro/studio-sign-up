@@ -1,6 +1,6 @@
-package com.iotstudio.studiosignup.dto;
+package com.iotstudio.studiosignup.object.dto;
 
-import com.iotstudio.studiosignup.entity.Role;
+import com.iotstudio.studiosignup.object.entity.Role;
 import lombok.Data;
 
 import java.util.List;

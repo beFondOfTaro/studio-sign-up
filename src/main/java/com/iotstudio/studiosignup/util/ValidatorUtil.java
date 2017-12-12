@@ -1,7 +1,7 @@
 package com.iotstudio.studiosignup.util;
 
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 

@@ -1,6 +1,6 @@
 package com.iotstudio.studiosignup.service;
 
-import com.iotstudio.studiosignup.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.springframework.web.multipart.MultipartFile;
 

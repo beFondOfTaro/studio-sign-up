@@ -1,23 +1,18 @@
 package com.iotstudio.studiosignup.service.imp;
 
 import com.iotstudio.studiosignup.constant.HttpParamKey;
-import com.iotstudio.studiosignup.constant.RoleNameConstant;
 import com.iotstudio.studiosignup.converter.User2UserDtoConverter;
-import com.iotstudio.studiosignup.entity.Role;
-import com.iotstudio.studiosignup.entity.StudentInfo;
-import com.iotstudio.studiosignup.entity.TeacherInfo;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.entity.Role;
+import com.iotstudio.studiosignup.object.entity.StudentInfo;
+import com.iotstudio.studiosignup.object.entity.TeacherInfo;
+import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.repository.*;
 import com.iotstudio.studiosignup.service.UserService;
 import com.iotstudio.studiosignup.shiro.token.StatelessAuthenticationToken;
 import com.iotstudio.studiosignup.shiro.token.TokenUtil;
 import com.iotstudio.studiosignup.util.CookieUtil;
-import com.iotstudio.studiosignup.util.HttpResponseUtil;
-import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

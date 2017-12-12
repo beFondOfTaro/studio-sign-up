@@ -2,7 +2,7 @@ package com.iotstudio.studiosignup.controller;
 
 import com.iotstudio.studiosignup.constant.PermissionActionConstant;
 import com.iotstudio.studiosignup.constant.RoleNameConstant;
-import com.iotstudio.studiosignup.entity.Role;
+import com.iotstudio.studiosignup.object.entity.Role;
 import com.iotstudio.studiosignup.service.RoleService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

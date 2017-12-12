@@ -1,14 +1,12 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.entity.Project;
-import com.iotstudio.studiosignup.entity.SighUpInfo;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.entity.Project;
+import com.iotstudio.studiosignup.object.entity.SighUpInfo;
+import com.iotstudio.studiosignup.object.entity.User;
 import com.iotstudio.studiosignup.repository.ProjectRepository;
 import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
 import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.SighUpInfoService;
-import com.iotstudio.studiosignup.util.HttpResponseUtil;
-import com.iotstudio.studiosignup.util.ValidatorUtil;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,6 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.entity.Role;
+import com.iotstudio.studiosignup.object.entity.Role;
 import com.iotstudio.studiosignup.repository.RoleRepository;
 import com.iotstudio.studiosignup.service.RoleService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

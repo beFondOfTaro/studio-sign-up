@@ -1,22 +1,16 @@
 package com.iotstudio.studiosignup.service.imp;
 
-import com.iotstudio.studiosignup.entity.Permission;
+import com.iotstudio.studiosignup.object.entity.Permission;
 import com.iotstudio.studiosignup.repository.PermissionRepository;
-import com.iotstudio.studiosignup.repository.RoleRepository;
-import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
-import com.iotstudio.studiosignup.repository.UserRepository;
 import com.iotstudio.studiosignup.service.PermissionService;
 import com.iotstudio.studiosignup.util.model.PageDataModel;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import lombok.extern.log4j.Log4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

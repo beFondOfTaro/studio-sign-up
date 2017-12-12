@@ -1,7 +1,7 @@
 package com.iotstudio.studiosignup.converter;
 
-import com.iotstudio.studiosignup.dto.UserDto;
-import com.iotstudio.studiosignup.entity.User;
+import com.iotstudio.studiosignup.object.dto.UserDto;
+import com.iotstudio.studiosignup.object.entity.User;
 
 public class User2UserDtoConverter {
 
