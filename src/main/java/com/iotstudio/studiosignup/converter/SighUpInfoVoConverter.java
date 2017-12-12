@@ -15,6 +15,7 @@ public class SighUpInfoVoConverter {
         vo.setPersonalIntroduction(sighUpInfo.getPersonalIntroduction());
         vo.setCheckCode(sighUpInfo.getCheckCode());
         vo.setProjectName(sighUpInfo.getProject().getName());
+        vo.setCreatedTime(sighUpInfo.getCreatedTime());
         return vo;
     }
 }

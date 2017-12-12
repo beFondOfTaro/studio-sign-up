@@ -11,6 +11,7 @@ public interface SighUpInfoService extends BaseService<SighUpInfo> {
     ResponseModel updateOne(SighUpInfo sighUpInfo,Integer userId,Integer projectId,Integer sighUpInfoId);
     ResponseModel selectSighUpInfoByUserIdAndProjectId(Integer userId,Integer projectId,HttpServletResponse response);
     ResponseModel updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(Integer checkCode, Integer userId, Integer projectId,Integer sighUpInfoId);
+    ResponseModel updateCheckCodeByUserIdAndSighUpInfoId(Integer checkCode, Integer userId,Integer sighUpInfoId);
     ResponseModel findSighUpInfosByProjectId(Integer projectId);
     ResponseModel findSighUpInfosByUserId(Integer userId);
 }

@@ -127,7 +127,15 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
     public ResponseModel updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(
             Integer checkCode, Integer userId, Integer projectId,Integer sighUpInfoId
     ){
-        if (sighUpInfoRepository.updateByUserIdAndProjectId(checkCode,userId,projectId,sighUpInfoId) == 1){
+        if (sighUpInfoRepository.updateByUserIdAndProjectIdAndId(checkCode,userId,projectId,sighUpInfoId) == 1){
+            return new ResponseModel();
+        }
+        return new ResponseModel("更新审核状态失败！");
+    }
+
+    @Override
+    public ResponseModel updateCheckCodeByUserIdAndSighUpInfoId(Integer checkCode, Integer userId, Integer sighUpInfoId) {
+        if (sighUpInfoRepository.updateByUserIdAndId(checkCode,userId,sighUpInfoId) == 1){
             return new ResponseModel();
         }
         return new ResponseModel("更新审核状态失败！");

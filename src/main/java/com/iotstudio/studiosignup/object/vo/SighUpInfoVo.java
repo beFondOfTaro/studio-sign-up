@@ -1,6 +1,9 @@
 package com.iotstudio.studiosignup.object.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class SighUpInfoVo {
@@ -11,4 +14,6 @@ public class SighUpInfoVo {
     private Integer checkCode;
     private String personalIntroduction;
     private String projectName;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")//序列化格式
+    private Date createdTime;
 }

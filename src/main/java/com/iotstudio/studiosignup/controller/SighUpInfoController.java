@@ -86,6 +86,14 @@ public class SighUpInfoController {
         return sighUpInfoService.updateOne(sighUpInfo,userId,projectId,sighUpInfoId);
     }
 
+    /**
+     * 更改某用户的某项目下的一个报名信息的审核状态
+     * @param checkCode 审核状态
+     * @param userId 教师的用户id
+     * @param projectId 项目id
+     * @param sighUpInfoId 报名信息id
+     * @return 模版信息
+     */
     @RequiresPermissions(value = entity + PermissionActionConstant.UPDATE)
     @PatchMapping(value = UserController.entity + "/{userId}/" + ProjectController.entity + "/{projectId}/" + entity + "/{sighUpInfoId}")
     public ResponseModel updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(@RequestParam("checkCode") Integer checkCode,
@@ -93,6 +101,14 @@ public class SighUpInfoController {
                                                              @PathVariable("projectId")Integer projectId,
                                                              @PathVariable("sighUpInfoId") Integer sighUpInfoId){
         return sighUpInfoService.updateCheckCodeByUserIdAndProjectIdAndSighUpInfoId(checkCode,userId,projectId,sighUpInfoId);
+    }
+
+    @RequiresPermissions(value = entity + PermissionActionConstant.UPDATE)
+    @PatchMapping(value = UserController.entity + "/{userId}/"+ entity + "/{sighUpInfoId}")
+    public ResponseModel updateCheckCodeByUserIdAndSighUpInfoId(@RequestParam("checkCode") Integer checkCode,
+                                                                @PathVariable("userId")Integer userId,
+                                                                @PathVariable("sighUpInfoId") Integer sighUpInfoId){
+        return sighUpInfoService.updateCheckCodeByUserIdAndSighUpInfoId(checkCode,userId,sighUpInfoId);
     }
 
     @RequiresPermissions(entity + PermissionActionConstant.DELETE)

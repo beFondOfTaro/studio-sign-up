@@ -17,9 +17,16 @@ public interface SighUpInfoRepository extends JpaRepository<SighUpInfo,Integer> 
     @Modifying
     @Query(value = "update sigh_up_info " +
             "SET check_code = ?1 " +
-            "WHERE user_id = ?2 AND project_id = ?3 AND sigh_up_info_id = ?4",
+            "WHERE user_id = ?2 AND project_id = ?3 AND id = ?4",
             nativeQuery = true)
-    int updateByUserIdAndProjectId(Integer checkCode, Integer userId, Integer projectId, Integer sighUpInfoId);
+    int updateByUserIdAndProjectIdAndId(Integer checkCode, Integer userId, Integer projectId, Integer sighUpInfoId);
+
+    @Modifying
+    @Query(value = "update sigh_up_info " +
+            "SET check_code = ?1 " +
+            "WHERE user_id = ?2 AND id = ?3",
+            nativeQuery = true)
+    int updateByUserIdAndId(Integer checkCode, Integer userId, Integer sighUpInfoId);
 
     List<SighUpInfo> findSighUpInfoListByProject(Project project);
     List<SighUpInfo> findAllByUser(User user);
