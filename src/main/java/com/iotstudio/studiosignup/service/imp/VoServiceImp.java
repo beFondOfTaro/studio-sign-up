@@ -38,6 +38,7 @@ public class VoServiceImp implements VoService {
             vo.setPhoto(studentInfo.getPhoto());
             vo.setQqNumber(studentInfo.getQqNumber());
             vo.setStudentNumber(studentInfo.getStudentNumber());
+            vo.setStudentInfoId(studentInfo.getId());
         }
         vo.setId(userId);
         vo.setPhone(user.getPhone());

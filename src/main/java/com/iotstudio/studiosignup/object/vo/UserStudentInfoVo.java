@@ -6,6 +6,7 @@ import lombok.Data;
 public class UserStudentInfoVo {
 
     private Integer id;
+    private Integer studentInfoId;
     private String username;
     private String realName;
     private String major;

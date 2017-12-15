@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(value = RoleNameConstant.API_VERSION)
@@ -86,10 +87,14 @@ public class StudentInfoController {
      */
     @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
     @PutMapping(value = UserController.entity + "/{userId}/" + entity + "/{id}")
-    public ResponseModel studentInfoUpdateOneByUserId(StudentInfo studentInfo,
+    public ResponseModel studentInfoUpdateOneByUserId(@NotNull StudentInfo studentInfo,
                                                       @RequestParam("file") MultipartFile photoFile,
                                                       @PathVariable("userId") String userId,
-                                                      @PathVariable("id") Integer id){
+                                                      @PathVariable("id") Integer id,
+                                                      BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            BindingResultHandlerUtil.onError(bindingResult);
+        }
         studentInfo.setId(id);
         return studentInfoService.updateOneByUserId(studentInfo,userId,photoFile);
     }
