@@ -80,6 +80,13 @@
 			<version>1.16.18</version>
 			<scope>provided</scope>
 		</dependency>
+
+		<!--&lt;!&ndash; 外部tomcat &ndash;&gt;-->
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<build>

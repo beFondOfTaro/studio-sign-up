@@ -54,9 +54,8 @@ public class StudentInfoController {
      */
     @RequiresPermissions(entity + PermissionActionConstant.FIND)
     @GetMapping(value = UserController.entity + "/{userId}/" + entity)
-    public ResponseModel studentInfoFindOneById(@PathVariable("userId") String userId,
-                                                HttpServletResponse response){
-        return studentInfoService.findOneByUserId(userId,response);
+    public ResponseModel studentInfoFindOneById(@PathVariable("userId") String userId){
+        return studentInfoService.findOneByUserId(userId);
     }
 
     /**
@@ -71,12 +70,11 @@ public class StudentInfoController {
     public ResponseModel studentInfoAddOne(@Valid StudentInfo studentInfo,
                                            @RequestHeader(HttpParamKey.CLIENT_ID) String userId,
                                            @RequestParam("file") MultipartFile photoFile,
-                                           HttpServletResponse response,
                                            BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return BindingResultHandlerUtil.onError(bindingResult);
         }
-        return studentInfoService.addOne(studentInfo,userId,photoFile,response);
+        return studentInfoService.addOne(studentInfo,userId,photoFile);
     }
 
     /**
@@ -87,21 +85,23 @@ public class StudentInfoController {
      * @return 信息
      */
     @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
-    @PutMapping(value = UserController.entity + "/{userId}/" + entity)
+    @PutMapping(value = UserController.entity + "/{userId}/" + entity + "/{id}")
     public ResponseModel studentInfoUpdateOneByUserId(StudentInfo studentInfo,
                                                       @RequestParam("file") MultipartFile photoFile,
-                                                      @RequestParam("userId") String userId){
+                                                      @PathVariable("userId") String userId,
+                                                      @PathVariable("id") Integer id){
+        studentInfo.setId(id);
         return studentInfoService.updateOneByUserId(studentInfo,userId,photoFile);
     }
 
     /**
-     * 根据学生id删除一个学生信息
+     * 根据学生id删除学生信息
      * @param userId 学生id
      * @return 一个学生信息
      */
     @RequiresPermissions(entity + PermissionActionConstant.DELETE)
-    @DeleteMapping(value = UserController.entity + "/{userId}/" + entity + "/{userId}")
-    public ResponseModel deleteOneByUserId(@RequestParam("userId") String userId){
+    @DeleteMapping(value = UserController.entity + "/{userId}/" + entity)
+    public ResponseModel deleteOneByUserId(@PathVariable("userId") String userId){
         return studentInfoService.deleteOneByUserId(userId);
     }
 }

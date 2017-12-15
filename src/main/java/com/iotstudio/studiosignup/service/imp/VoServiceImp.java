@@ -5,10 +5,7 @@ import com.iotstudio.studiosignup.object.entity.*;
 import com.iotstudio.studiosignup.object.vo.SighUpInfoVo;
 import com.iotstudio.studiosignup.object.vo.UserStudentInfoVo;
 import com.iotstudio.studiosignup.object.vo.UserTeacherVo;
-import com.iotstudio.studiosignup.repository.SighUpInfoRepository;
-import com.iotstudio.studiosignup.repository.StudentInfoRepository;
-import com.iotstudio.studiosignup.repository.TeacherInfoRepository;
-import com.iotstudio.studiosignup.repository.UserRepository;
+import com.iotstudio.studiosignup.repository.*;
 import com.iotstudio.studiosignup.service.VoService;
 import com.iotstudio.studiosignup.util.model.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +25,8 @@ public class VoServiceImp implements VoService {
     private TeacherInfoRepository teacherInfoRepository;
     @Autowired
     private SighUpInfoRepository sighUpInfoRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Override
     public ResponseModel getUserStudentInfo(Integer userId) {
@@ -68,5 +67,23 @@ public class VoServiceImp implements VoService {
         User user = sighUpInfo.getUser();
         StudentInfo studentInfo = studentInfoRepository.findByUserId(user.getId());
         return new ResponseModel(SighUpInfoVoConverter.convert(sighUpInfo,studentInfo,user));
+    }
+
+    @Override
+    public ResponseModel sighUp(SighUpInfo sighUpInfo,Integer userId, String projectName) {
+        String msg;
+        SighUpInfo savingInfo = new SighUpInfo();
+        User user = new User();
+        user.setId(userId);
+        Project project = projectRepository.findProjectByName(projectName);
+        if (project == null){
+            msg = "不存在该项目";
+            return new ResponseModel(false,msg);
+        }
+        savingInfo.setId(sighUpInfo.getId());
+        savingInfo.setUser(user);
+        savingInfo.setProject(project);
+        savingInfo.setPersonalIntroduction(sighUpInfo.getPersonalIntroduction());
+        return new ResponseModel(sighUpInfoRepository.save(savingInfo));
     }
 }

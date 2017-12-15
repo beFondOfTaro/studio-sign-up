@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface StudentInfoService extends BaseService<StudentInfo> {
 
-    ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile,HttpServletResponse response);
+    ResponseModel addOne(StudentInfo studentInfo, String userId, MultipartFile photoFile);
 
     ResponseModel updateOneByUserId(StudentInfo studentInfo, String userId, MultipartFile photoFile);
 
     ResponseModel deleteOneByUserId(String UserId);
 
-    ResponseModel findOneByUserId(String userId, HttpServletResponse response);
+    ResponseModel findOneByUserId(String userId);
 }

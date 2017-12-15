@@ -81,11 +81,11 @@ CREATE TABLE `role_permission` (
   CONSTRAINT `FKa6jx8n8xkesmjmv6jqug6bg68` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `FKf8yllw1ecvwqy3ehyxawqa1qp` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`),
   CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `role_permission` */
 
-insert  into `role_permission`(`id`,`role_id`,`permission_id`) values (1,3,32),(2,3,15),(3,3,34),(4,3,35),(5,3,36),(6,3,37),(7,3,16),(8,3,1),(9,3,2),(12,4,16),(13,3,19),(14,2,19),(15,4,19),(16,4,20),(17,4,17),(18,4,17),(19,4,31),(20,4,32),(21,4,34),(22,2,8);
+insert  into `role_permission`(`id`,`role_id`,`permission_id`) values (1,3,32),(2,3,15),(3,3,34),(4,3,35),(5,3,36),(6,3,37),(7,3,16),(8,3,1),(9,3,2),(12,4,16),(13,3,19),(14,2,19),(15,4,19),(16,4,20),(17,4,17),(18,4,17),(19,4,31),(20,4,32),(21,4,34),(22,2,8),(23,4,31),(24,3,31);
 
 /*Table structure for table `sigh_up_info` */
 
@@ -110,7 +110,7 @@ CREATE TABLE `sigh_up_info` (
 
 /*Data for the table `sigh_up_info` */
 
-insert  into `sigh_up_info`(`id`,`user_id`,`project_id`,`personal_introduction`,`check_code`,`created_time`) values (5,1,1,'asdasd',2,'2017-12-01 21:54:56');
+insert  into `sigh_up_info`(`id`,`user_id`,`project_id`,`personal_introduction`,`check_code`,`created_time`) values (5,1,1,'asdasd',3,'2017-12-01 21:54:56');
 
 /*Table structure for table `student_info` */
 

@@ -100,14 +100,19 @@ public class SighUpInfoServiceImp implements SighUpInfoService {
 
     @Override
     public ResponseModel addOne(SighUpInfo sighUpInfo, String username, String projectName) {
+        String msg;
         User user = userRepository.findByUsername(username);
         if (user == null){
-            String msg = "用户"+ username +"不存在！";
+            msg = "用户"+ username +"不存在！";
             LOGGER.warn(msg);
             return new ResponseModel(false,msg,null);
         }
         sighUpInfo.setUser(user);
         Project project = projectRepository.findProjectByName(projectName);
+        if (project == null){
+            msg = "该项目不存在";
+            return new ResponseModel(false,msg,null);
+        }
         sighUpInfo.setProject(project);
         return new ResponseModel(sighUpInfoRepository.save(sighUpInfo));
     }
