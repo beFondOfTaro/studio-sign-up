@@ -87,7 +87,7 @@ public class StudentInfoController {
      */
     @RequiresPermissions(entity + PermissionActionConstant.UPDATE)
     @PutMapping(value = UserController.entity + "/{userId}/" + entity + "/{id}")
-    public ResponseModel studentInfoUpdateOneByUserId(@NotNull StudentInfo studentInfo,
+    public ResponseModel studentInfoUpdateOneByUserId(@Valid StudentInfo studentInfo,
                                                       @RequestParam("file") MultipartFile photoFile,
                                                       @PathVariable("userId") String userId,
                                                       @PathVariable("id") Integer id,
