@@ -1,0 +1,12 @@
+spring:
+#redis配置
+  redis:
+    host: localhost
+    port: 8081
+  #mysql
+  datasource:
+    username: root
+    password: A61RSTBY
+    url: jdbc:mysql://10.2.132.173:64871/studio_sigh_up_db
+file:
+  uploadPath: /usr/repository

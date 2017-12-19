@@ -73,16 +73,18 @@ public class UserController {
     }
 
     @RequiresPermissions(value = entity + PermissionActionConstant.UPDATE )
-    @PutMapping(value = entity)
+    @PutMapping(value = entity+"/{userId}")
     public ResponseModel userUpdateOne(@Valid User user,
+                                       @PathVariable("userId") Integer userId,
                                        BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             BindingResultHandlerUtil.onError(bindingResult);
         }
+        user.setId(userId);
         return userService.updateOne(user);
     }
 
-    @RequiresPermissions(value = entity + ":delete")
+    @RequiresPermissions(value = entity + PermissionActionConstant.DELETE)
     @DeleteMapping(value = entity+"/{userId}")
     public ResponseModel userDeleteOne(@PathVariable("id") Integer id){
         return userService.deleteOneById(id);

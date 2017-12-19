@@ -8,6 +8,8 @@ import com.iotstudio.studiosignup.object.vo.SighUpInfoVo;
 public class SighUpInfoVoConverter {
     public static SighUpInfoVo convert(SighUpInfo sighUpInfo, StudentInfo studentInfo, User user){
         SighUpInfoVo vo = new SighUpInfoVo();
+        vo.setUserId(user.getId());
+        vo.setSighUpInfoId(sighUpInfo.getId());
         vo.setUsername(user.getUsername());
         vo.setRealName(user.getRealName());
         vo.setMajor(studentInfo.getMajor());

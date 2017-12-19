@@ -7,6 +7,8 @@ import java.util.Date;
 
 @Data
 public class SighUpInfoVo {
+    private Integer userId;
+    private Integer sighUpInfoId;
     private String username;
     private String realName;
     private String major;
