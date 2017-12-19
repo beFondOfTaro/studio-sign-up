@@ -1,9 +1,6 @@
 package com.iotstudio.studiosignup.object.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -20,6 +17,7 @@ public class SighUpInfo extends BaseEntity {
     @NotNull
     private String personalIntroduction;//个人介绍
 
+    @Column(insertable = false)
     private Integer checkCode;//审核代码,1:待审核，2:未通过
 
     public SighUpInfo() {
